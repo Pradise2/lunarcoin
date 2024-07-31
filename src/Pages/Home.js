@@ -195,7 +195,7 @@ const Home = () => {
       </div>
 
       <div className="bg-zinc-950 bg-opacity-80 text-card-foreground p-2 rounded-3xl w-full max-w-md text-center min-h-[20vh] flex flex-col justify-center space-y-4">
-        <p className="text-zinc-400 text-xl ">Farming</p>
+        <p className="text-zinc-400 text-xl ">Farming Points</p>
         <div className="flex items-center justify-center space-x-2">
           <img aria-hidden="true" alt="team-icon" src={coin2} className="mr-2" width="25" height="5" />
           <p className="text-4xl font-normal text-primary">
