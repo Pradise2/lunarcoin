@@ -22,13 +22,26 @@ const Tasks = () => {
 
   const tasks = [
     { id: 1, title: 'Follow Community', reward: 1500, link: "https://t.me/lunarcoincommunity" },
-    { id: 2, title: 'React to post', reward: 1000, link: " https://t.me/lunarcoincommunity/11" },
-    { id: 3, title: 'React to post', reward: 1000, link: " https://t.me/lunarcoincommunity/12" },
-    { id: 4, title: 'React to post', reward: 1000, link: " https://t.me/lunarcoincommunity/15" },
-    { id: 5, title: 'Retweet, comment to tweet', reward: 1000, link: " https://x.com/TheLunar_Coin/status/1815147922029199429?t=-waUnThgS_cwOvMibbqhsg&s=19" },
-    { id: 6, title: 'Retweet, like tweet', reward: 1000, link: " https://x.com/TheLunar_Coin/status/1815378630198841422?s=19" },
-    { id: 7, title: 'Subscribe to YouTube', reward: 1500, link: "https://youtube.com/@thelunarcoinofficial?si=qQttWxKSGuQpuoim"}, 
-    ];
+    { id: 2, title: 'Follow Twitter', reward: 1000, link: "https://x.com/TheLunar_Coin " },
+    { id: 3, title: 'Retweet, like and comment', reward: 1000, link: " https://x.com/TheLunar_Coin/status/1817636899739119627?t=YS-_UF6vNOY2uKjLeXFYpw&s=19" },
+    { id: 4, title: 'Retweet, like and comment', reward: 1000, link: " https://x.com/TheLunar_Coin/status/1816780259611578582?t=YS-_UF6vNOY2uKjLeXFYpw&s=19" },
+    { id: 5, title: 'Retweet, like and comment', reward: 1000, link: " https://x.com/TheLunar_Coin/status/1816519875499819153?t=YS-_UF6vNOY2uKjLeXFYpw&s=19" },
+    { id: 6, title: 'Retweet, like and comment', reward: 1000, link: " https://x.com/TheLunar_Coin/status/1815830483969958010?t=3lo1tvX1VKN669SG9jmDtg&s=19" },
+    { id: 7, title: 'Retweet, like and comment', reward: 1000, link: " https://x.com/TheLunar_Coin/status/1815147922029199429?t=3lo1tvX1VKN669SG9jmDtg&s=19" },
+    { id: 8, title: 'Retweet, like and comment', reward: 1000, link: " https://x.com/TheLunar_Coin/status/1816519875499819153?t=YS-_UF6vNOY2uKjLeXFYpw&s=19" },
+    { id: 9, title: 'Retweet, like and comment', reward: 1000, link: " https://x.com/TheLunar_Coin/status/1815158306757050406?t=3lo1tvX1VKN669SG9jmDtg&s=19" },
+    { id: 10, title: 'Retweet, like and comment', reward: 1000, link: " https://x.com/TheLunar_Coin/status/1815378630198841422?t=3lo1tvX1VKN669SG9jmDtg&s=19" },
+    { id: 11, title: 'Retweet, like and comment', reward: 1000, link: " https://x.com/TheLunar_Coin/status/1815818811829796980?t=3lo1tvX1VKN669SG9jmDtg&s=19" },
+    { id: 12, title: 'Retweet, like and comment', reward: 1000, link: " https://x.com/TheLunar_Coin/status/1815830483969958010?t=3lo1tvX1VKN669SG9jmDtg&s=19" },
+    { id: 13, title: 'Subscribe to YouTube', reward: 1500, link: "https://youtube.com/@thelunarcoinofficial?si=qQttWxKSGuQpuoim"}, 
+    { id: 14, title: 'React to post', reward: 1000, link: " https://t.me/lunarcoincommunity/23" },
+    { id: 15, title: 'React to post', reward: 1000, link: " https://t.me/lunarcoincommunity/12" },
+    { id: 16, title: 'React to post', reward: 1000, link: " https://t.me/lunarcoincommunity/15" },
+    { id: 17, title: 'React to post', reward: 1000, link: " https://t.me/lunarcoincommunity/16" },
+    { id: 18, title: 'React to post', reward: 1000, link: " https://t.me/lunarcoincommunity/20" },
+    { id: 19, title: 'React to post', reward: 1000, link: " https://t.me/lunarcoincommunity/22" },
+    { id: 20, title: 'Follow Facebook', reward: 1000, link: " https://www.facebook.com/profile.php?id=61563027839976&mibextid=LQQJ4d " },
+ ];
 
   useEffect(() => {
     const initializeUserId = () => {

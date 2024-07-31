@@ -16,6 +16,11 @@ const Home = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Clear local storage when the component mounts
+    localStorage.clear();
+  }, []);
+
+  useEffect(() => {
     if (window.Telegram && window.Telegram.WebApp) {
       const { WebApp } = window.Telegram;
       WebApp.expand();
