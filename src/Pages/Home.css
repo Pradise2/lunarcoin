@@ -1,0 +1,30 @@
+@keyframes moveTapButton {
+    0% { transform: translate(0, 0); }
+    25% { transform: translate(20px, -20px); }
+    50% { transform: translate(40px, 0); }
+    75% { transform: translate(20px, 20px); }
+    100% { transform: translate(0, 0); }
+  }
+  
+  @keyframes moveMorrButton {
+    0% { transform: translate(0, 0); }
+    25% { transform: translate(-20px, 20px); }
+    50% { transform: translate(-40px, 0); }
+    75% { transform: translate(-20px, -20px); }
+    100% { transform: translate(0, 0); }
+  }
+  
+  .button-animation {
+    animation-duration: 0.6s;
+    animation-timing-function: ease-in-out;
+  }
+  
+  .move-tap {
+    animation-name: moveTapButton;
+  }
+  
+  .move-morr {
+    animation-name: moveMorrButton;
+  }
+  
+
