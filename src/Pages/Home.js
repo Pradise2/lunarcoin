@@ -190,12 +190,12 @@ const Home = () => {
       <div className="flex flex-row justify-between items-center space-x-4">
         <p className="text-white font-bold text-xl">HI, {userName}</p>
         <p className="text-golden-moon font-bold text-xl">
-          {userData && isValidNumber(userData.FarmBalance) ? userData.FarmBalance.toLocaleString() : "0"} <span className="text-golden-moon"></span>
+          {userData && isValidNumber(userData.FarmBalance) ? userData.FarmBalance.toLocaleString() : "0"} <span className="text-golden-moon">LAR</span>
         </p>
       </div>
 
       <div className="bg-zinc-950 bg-opacity-80 text-card-foreground p-2 rounded-3xl w-full max-w-md text-center min-h-[20vh] flex flex-col justify-center space-y-4">
-        <p className="text-zinc-400 text-xl ">Your Farming</p>
+        <p className="text-zinc-400 text-xl ">Farming</p>
         <div className="flex items-center justify-center space-x-2">
           <img aria-hidden="true" alt="team-icon" src={coin2} className="mr-2" width="25" height="5" />
           <p className="text-4xl font-normal text-primary">
