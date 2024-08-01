@@ -10,7 +10,7 @@ import logo from './logo.png';
 
 const Tasks = () => {
   const [userData, setUserData] = useState(null);
-  const [userId, setUserId] = useState("01"); // Replace with dynamic ID if possible
+  const [userId, setUserId] = useState(null); // Replace with dynamic ID if possible
   const [taskFilter, setTaskFilter] = useState('new');
   const [loadingTask, setLoadingTask] = useState(null);
   const [farmData, setFarmData] = useState(null);
@@ -198,7 +198,7 @@ const Tasks = () => {
           [taskId]: 'claim',
         }
       }));
-    }, 35000);
+    }, 20000);
   };
 
   const filteredTasks = tasks.filter(task => {
