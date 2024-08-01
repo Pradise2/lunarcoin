@@ -179,7 +179,7 @@ const Tasks = () => {
       setSelectedTask(task);
       setShowRCTasks(true);
       setShowGoButton(true);
-      setTimeout(() => setShowRCTasks(false), 2000);
+      setTimeout(() => setShowRCTasks(false), 500);
     } catch (error) {
       console.error('Error updating FarmBalance:', error);
     }
