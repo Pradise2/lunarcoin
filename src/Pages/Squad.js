@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getUserFromFarm } from '../utils/firestoreFunctions';
+import { getUserFromFarm, updateFarmBalance } from '../utils/firestoreFunctions';
 import Footer from '../Component/Footer';
 import { ClipLoader } from 'react-spinners';
 import './bg.css';
@@ -8,7 +8,7 @@ import axios from 'axios';
 
 const Squad = () => {
   const [copied, setCopied] = useState(false);
-  const [userId, setUserId] = useState("001");
+  const [userId, setUserId] = useState(null);
   const [username, setUserName] = useState(null);
   const [userSquad, setUserSquad] = useState(null);
   const [squads, setSquads] = useState([]);
