@@ -41,7 +41,8 @@ const Tasks = () => {
     { id: 18, title: 'React to post', reward: 1000, link: " https://t.me/lunarcoincommunity/20" },
     { id: 19, title: 'React to post', reward: 1000, link: " https://t.me/lunarcoincommunity/22" },
     { id: 20, title: 'Follow Facebook', reward: 1000, link: " https://www.facebook.com/profile.php?id=61563027839976&mibextid=LQQJ4d " },
- ];
+    { id: 21, title: 'Boost Telegram Community', reward: 5000, link: " https://t.me/boost/lunarcoincommunity " },
+  ];
 
   useEffect(() => {
     const initializeUserId = () => {
