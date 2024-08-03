@@ -1,6 +1,17 @@
 // src/firestoreFunctions.js
 import { db } from './firebaseConfig';
-import { doc, setDoc, getDoc, updateDoc } from "firebase/firestore"; 
+import { doc, setDoc, getDoc, updateDoc, collection, getDocs } from "firebase/firestore"; 
+
+// Utility function to update user count for a specific collection
+const updateUserCount = async (collectionName) => {
+  const collectionRef = collection(db, collectionName);
+  const collectionSnapshot = await getDocs(collectionRef);
+  const userCount = collectionSnapshot.size;
+
+  await setDoc(doc(db, "UserCount", collectionName), {
+    userCount: userCount
+  });
+};
 
 // Home Collection Functions
 export const addUserToHome = async (userId, userData) => {
@@ -19,10 +30,10 @@ export const getUserFromHome = async (userId) => {
   }
 };
 
-
 // Tasks Collection Functions
 export const addUserTasks = async (userId, tasks) => {
-  await setDoc(doc(db, "Tasks", userId.toString()),  tasks );
+  await setDoc(doc(db, "Tasks", userId.toString()), tasks);
+  await updateUserCount("Tasks");
 };
 
 export const getUserTasks = async (userId) => {
@@ -40,6 +51,7 @@ export const getUserTasks = async (userId) => {
 // Farm Collection Functions
 export const addUserToFarm = async (userId, farmData) => {
   await setDoc(doc(db, "Farm", userId.toString()), farmData);
+  await updateUserCount("Farm");
 };
 
 export const getUserFromFarm = async (userId) => {
@@ -75,5 +87,18 @@ export const getUserFromSquad = async (userId) => {
   } else {
     console.log("No such document!");
     return null;
+  }
+};
+
+// Function to get user count from the UserCount collection
+export const getUserCount = async (collectionName) => {
+  const countDocRef = doc(db, "UserCount", collectionName);
+  const countDocSnap = await getDoc(countDocRef);
+
+  if (countDocSnap.exists()) {
+    return countDocSnap.data().userCount;
+  } else {
+    console.log("No such document!");
+    return 0;
   }
 };
