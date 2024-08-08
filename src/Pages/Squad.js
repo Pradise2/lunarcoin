@@ -165,7 +165,7 @@ const Squad = () => {
   <span className="text-golden-moon">LAR</span>
 </p>
 
-        <p className="text-sm mb-4 text-center">Earning through friends invite</p>
+        <p className="text-sm mb-4 text-center">Earn 5000 LAR by Inviting Friends</p>
         <div className="flex p-1 justify-center">
           <button className="bg-zinc-600 px-4 py-2 rounded-xl">Claim</button>
         </div>
