@@ -42,6 +42,9 @@ const Tasks = () => {
     { id: 19, title: 'React to post', reward: 1000, link: " https://t.me/lunarcoincommunity/22" },
     { id: 20, title: 'Follow Facebook', reward: 1000, link: " https://www.facebook.com/share/P4hEQVLs7VYqEBMM/?mibextid=qi2Omg " },
     { id: 21, title: 'Boost Telegram Community', reward: 5000, link: " https://t.me/boost/lunarcoincommunity " },
+    { id: 22, title: 'Retweet, like and comment', reward: 5000, link: " https://x.com/TheLunar_Coin/status/1821102575594168820?t=eqgUvTiDzvCnY9QeoSA_JA&s=19" },
+    { id: 23, title: 'Retweet, like and comment', reward: 5000, link: "https://x.com/TheLunar_Coin/status/1821244948810744269?t=eqgUvTiDzvCnY9QeoSA_JA&s=19" },
+    { id: 24, title: 'Ambassadors program: 4×', reward: 10000, link: " https://x.com/TheLunar_Coin/status/1819788084306694218?t=RimeD0E01oJ8MwC1LEto6w&s=19 " },  
   ];
 
   useEffect(() => {
