@@ -9,7 +9,7 @@ import coin2 from './logo.png';
 
 const Home = () => {
   const [userData, setUserData] = useState(null);
-  const [userId, setUserId] = useState(null);
+  const [userId, setUserId] = useState("001");
   const [userName, setUserName] = useState(null);
   const [buttonText, setButtonText] = useState("Start");
   const [showRCFarm, setShowRCFarm] = useState(false);
@@ -183,7 +183,7 @@ const Home = () => {
   const isValidNumber = (value) => typeof value === 'number' && !isNaN(value);
 
   return (
-    <div className="min-h-screen bg-cover text-white flex flex-col items-center p-7 space-y-4">
+    <div className="min-h-screen bg-cover text-white flex flex-col items-center p-7 space-y-6">
       <div className="relative pt-6 mb-3 pb-">
         <img src={coin} alt="LAR Coin" className="w-63 h-60 rounded-full" />
       </div>
