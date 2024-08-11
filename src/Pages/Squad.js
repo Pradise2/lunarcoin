@@ -157,11 +157,10 @@ const Squad = () => {
     );
   }
 
-  const totalBalance = Number(farmBalance || 0) + Number(userSquad?.claimedReferral || 0);
-  const formattedTotalBalance = totalBalance.toFixed(2);
-  const displayTotalBalance = Number(formattedTotalBalance).toLocaleString('en-US', {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
+  const totalBalance = Number(farmBalance || 0) + Number(userSquad?.totalBalance || 0);
+  const displayTotalBalance = totalBalance.toLocaleString('en-US', {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
   });
 
   // Format the difference with commas and two decimal places
@@ -171,8 +170,8 @@ const Squad = () => {
   const difference = earning - (userSquad?.claimedReferral || 0);
   
   const formattedDifference = difference.toLocaleString('en-US', {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
   });
 
   const isClaimable = difference > 0;
@@ -194,7 +193,7 @@ const Squad = () => {
         <p className="text-center text-3xl font-normal">
          {formattedDifference} <span className="text-golden-moon">LAR</span>
         </p>
-        <p className="text-sm mb-4 text-center">Earning through friends invite</p>
+        <p className="text-sm mb-4 text-center">Earn 5,000 LAR per Referral</p>
         <div className="flex p-1 justify-center">
           <button
             className={`px-4 py-2 rounded-xl ${isClaimable ? 'bg-golden-moon text-white ' : 'bg-gray-500 text-white'}`}
