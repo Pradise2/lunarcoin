@@ -8,11 +8,12 @@ import axios from 'axios';
 
 const Squad = () => {
   const [copied, setCopied] = useState(false);
-  const [userId, setUserId] = useState(null);
+  const [userId, setUserId] = useState("743737380");
   const [username, setUserName] = useState(null);
   const [userSquad, setUserSquad] = useState(null);
   const [squads, setSquads] = useState([]);
-  const [FarmData, setFarmData] = useState(null);
+  const [farmData, setFarmData] = useState(null);
+  const [farmBalance, setFarmBalance] = useState(0); // State for farmBalance
   const [loading, setLoading] = useState(true);
   const [showRCSquad, setShowRCSquad] = useState(false);
   const [error, setError] = useState(null); // Define error state
@@ -64,6 +65,7 @@ const Squad = () => {
       try {
         const data = await getUserFromFarm(userId);
         setFarmData(data);
+        setFarmBalance(data.FarmBalance || 0); // Fetch and set farmBalance
       } catch (error) {
         console.error('Error fetching farm data:', error);
       } finally {
@@ -75,6 +77,7 @@ const Squad = () => {
       fetchFarmData();
     }
   }, [userId]);
+
 
   const copyToClipboard = () => {
     const reflink = `https://t.me/ThelunarCoin_bot?start=ref_${userId}`;
@@ -103,32 +106,39 @@ const Squad = () => {
   };
 
   const handleClaim = async () => {
-    // Vibrate when claiming
     if (navigator.vibrate) {
       navigator.vibrate(500); // Vibrate for 500ms
     }
-
+  
+    const earning = (userSquad?.referralCount || 0) * 5000;
+    const difference = earning - (userSquad?.claimedReferral || 0);
+    const newClaimedReferral = (userSquad?.claimedReferral || 0) + difference;
+    const newTotalSquad = (userSquad?.totalBalance || 0) + difference;
+    const totalBalance = Number(farmBalance || 0) + Number(newTotalSquad);
+  
     try {
-      const response = await axios.get(`https://lunarapp.thelunarcoin.com/backend/api/squad/update/${userId}`);
+      const response = await axios.put(`https://lunarapp.thelunarcoin.com/backend/api/squad/update`, {
+        userId: userId,
+        claimedreferral: newClaimedReferral,
+        totalbalance: totalBalance.toFixed(2),
+        totalsquad: newTotalSquad,
+      });
+  
       console.log('Claim response:', response.data);
-      // Update the user squad data after the claim
+  
       setUserSquad(prevState => ({
         ...prevState,
-        totalBalance: response.data.totalBalance,
-        claimedReferral: response.data.claimedReferral,
+        claimedReferral: newClaimedReferral,
+        totalBalance: newTotalSquad,
       }));
     } catch (error) {
       console.error('Error during claim:', error);
       setError('Error during claim');
       return;
     }
-
+  
     setShowRCSquad(true);
-
-    // Hide RewardCard after 2 seconds
     setTimeout(() => setShowRCSquad(false), 2000);
-
-   
   };
 
   if (loading) {
@@ -147,6 +157,27 @@ const Squad = () => {
     );
   }
 
+  const totalBalance = Number(farmBalance || 0) + Number(userSquad?.claimedReferral || 0);
+  const formattedTotalBalance = totalBalance.toFixed(2);
+  const displayTotalBalance = Number(formattedTotalBalance).toLocaleString('en-US', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+
+  // Format the difference with commas and two decimal places
+ 
+
+  const earning = userSquad?.referralCount * 5000 || 0;
+  const difference = earning - (userSquad?.claimedReferral || 0);
+  
+  const formattedDifference = difference.toLocaleString('en-US', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+
+  const isClaimable = difference > 0;
+
+
   return (
     <div className="min-h-screen bg-cover text-white flex flex-col items-center p-4 space-y-4">
       <h1 className="text-center text-4xl font-normal">
@@ -155,19 +186,23 @@ const Squad = () => {
       <div className="bg-zinc-800 bg-opacity-70 p-4 rounded-xl w-full max-w-md space-y-2">
         <p className="text-zinc-400 text-center">Total squad balance</p>
         <p className="text-center text-3xl font-normal">
-          {} <span className="text-golden-moon">LAR</span>
+          {displayTotalBalance} <span className="text-golden-moon">LAR</span>
         </p>
       </div>
       <div className="bg-zinc-800 bg-opacity-70 p-4 rounded-xl w-full max-w-md space-y-2">
         <p className="text-zinc-400 text-center">Your rewards</p>
         <p className="text-center text-3xl font-normal">
-  {userSquad?.referralCount ? `${userSquad.referralCount * 5000} ` : '0 '}
-  <span className="text-golden-moon">LAR</span>
-</p>
-
-        <p className="text-sm mb-4 text-center">Earn 5000 LAR by Inviting Friends</p>
+         {formattedDifference} <span className="text-golden-moon">LAR</span>
+        </p>
+        <p className="text-sm mb-4 text-center">Earning through friends invite</p>
         <div className="flex p-1 justify-center">
-          <button className="bg-zinc-600 px-4 py-2 rounded-xl">Claim</button>
+          <button
+            className={`px-4 py-2 rounded-xl ${isClaimable ? 'bg-golden-moon text-white ' : 'bg-gray-500 text-white'}`}
+            onClick={isClaimable ? handleClaim : null}
+            disabled={!isClaimable}
+          >
+            {isClaimable ? 'Claim' : 'Claimed'}
+          </button>
         </div>
       </div>
       <div className="bg-zinc-800 bg-opacity-70 p-4 rounded-xl w-full max-w-md space-y-2">
