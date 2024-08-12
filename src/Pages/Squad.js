@@ -8,7 +8,7 @@ import axios from 'axios';
 
 const Squad = () => {
   const [copied, setCopied] = useState(false);
-  const [userId, setUserId] = useState(null);
+  const [userId, setUserId] = useState("743737380");
   const [username, setUserName] = useState(null);
   const [userSquad, setUserSquad] = useState(null);
   const [squads, setSquads] = useState([]);
@@ -157,7 +157,7 @@ const Squad = () => {
     );
   }
 
-  const totalBalance = Number(farmBalance || 0) + Number(userSquad?.totalBalance || 0);
+  const totalBalance = Number(farmBalance || 0) + Number(userSquad?.totalSquad || 0);
   const displayTotalBalance = totalBalance.toLocaleString('en-US', {
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,
