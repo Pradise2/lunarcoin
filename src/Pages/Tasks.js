@@ -206,7 +206,7 @@ const Tasks = () => {
           [taskId]: 'claim',
         }
       }));
-    }, 20000);
+    }, 50000);
   };
 
   const filteredTasks = tasks.filter(task => {
