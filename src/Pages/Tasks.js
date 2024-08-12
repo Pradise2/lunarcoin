@@ -44,7 +44,7 @@ const Tasks = () => {
     { id: 21, title: 'Boost Telegram Community', reward: 150000, link: " https://t.me/boost/lunarcoincommunity " },
     { id: 22, title: 'Retweet, like and comment', reward: 30000, link: " https://x.com/TheLunar_Coin/status/1821102575594168820?t=eqgUvTiDzvCnY9QeoSA_JA&s=19" },
     { id: 23, title: 'Retweet, like and comment', reward: 30000, link: "https://x.com/TheLunar_Coin/status/1821244948810744269?t=eqgUvTiDzvCnY9QeoSA_JA&s=19" },
-    { id: 24, title: 'Ambassadors program: 4×', reward: 150000, link: " https://x.com/TheLunar_Coin/status/1819788084306694218?t=RimeD0E01oJ8MwC1LEto6w&s=19 " },  
+    { id: 24, title: 'Ambassadors program', reward: 150000, link: " https://x.com/TheLunar_Coin/status/1819788084306694218?t=RimeD0E01oJ8MwC1LEto6w&s=19 " },  
     { id: 25, title: 'The Power of LUNAR COIN', reward: 100000, link: " https://youtu.be/V0IfwAYoJiU?si=PQOeq4xoGON0WIeR" },
     { id: 26, title: 'All About LUNAR COIN', reward: 100000, link: "https://youtu.be/5fAWfxcU5PM?si=yOX5WZsKeKzqYce2" },
     { id: 27, title: 'Traditional Currencies Vs Crypocurrencies', reward: 100000, link: " https://youtu.be/bnUviDsMJCQ?si=YfpEx_lDOArnX6sU " },  
