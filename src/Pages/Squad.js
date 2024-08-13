@@ -8,7 +8,7 @@ import axios from 'axios';
 
 const Squad = () => {
   const [copied, setCopied] = useState(false);
-  const [userId, setUserId] = useState(null);
+  const [userId, setUserId] = useState("743737380");
   const [username, setUserName] = useState(null);
   const [userSquad, setUserSquad] = useState(null);
   const [squads, setSquads] = useState([]);
@@ -122,7 +122,6 @@ const Squad = () => {
     console.log('New Total Squad:', newTotalSquad);
     console.log('Total Balance:', totalBalance);
   
-
     try {
       const response = await axios.put(`https://lunarapp.thelunarcoin.com/backend/api/squad/update`, {
         userId: userId,
@@ -133,20 +132,27 @@ const Squad = () => {
   
       console.log('Claim response:', response.data);
   
-      setUserSquad(prevState => ({
-        ...prevState,
-        claimedReferral: newClaimedReferral,
-        totalBalance: newTotalSquad,
-      }));
+      // Re-fetch updated squad and farm data
+      const updatedSquadResponse = await axios.get(`https://lunarapp.thelunarcoin.com/backend/api/squad/${userId}`);
+      const updatedSquad = updatedSquadResponse.data.userSquad;
+      const updatedFarmData = await getUserFromFarm(userId);
+  
+      console.log('Claim update response:', updatedSquadResponse.data);
+  
+      console.log('farm update response:', updatedFarmData.data);
+  
+
+      setUserSquad(updatedSquad);
+      setFarmBalance(updatedFarmData.FarmBalance || 0);
     } catch (error) {
       console.error('Error during claim:', error);
       setError('Error during claim');
-      return;
     }
   
     setShowRCSquad(true);
     setTimeout(() => setShowRCSquad(false), 2000);
   };
+  
 
   if (loading) {
     return (
@@ -173,9 +179,9 @@ const Squad = () => {
   // Format the difference with commas and two decimal places
  
 
-  const earning = userSquad?.referralCount * 5000 || 0;
-  const difference = earning - (userSquad?.claimedReferral || 0);
-  
+  const earning = Number(userSquad?.referralCount || 0) * 5000;
+  const difference = Number(earning) - Number(userSquad?.claimedReferral || 0);
+ 
   const formattedDifference = difference.toLocaleString('en-US', {
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,
