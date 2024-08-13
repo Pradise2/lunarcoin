@@ -8,7 +8,7 @@ import axios from 'axios';
 
 const Squad = () => {
   const [copied, setCopied] = useState(false);
-  const [userId, setUserId] = useState(null);
+  const [userId, setUserId] = useState("1825721247");
   const [username, setUserName] = useState(null);
   const [userSquad, setUserSquad] = useState(null);
   const [squads, setSquads] = useState([]);
@@ -38,7 +38,7 @@ const Squad = () => {
     }
   }, []);
 
-  useEffect(() => {
+  useEffect(() => { 
     const fetchSquadData = async () => {
       try {
         const response = await axios.get(`https://lunarapp.thelunarcoin.com/backend/api/squad/${userId}`);
