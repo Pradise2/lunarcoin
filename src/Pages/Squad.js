@@ -8,7 +8,7 @@ import axios from 'axios';
 
 const Squad = () => {
   const [copied, setCopied] = useState(false);
-  const [userId, setUserId] = useState("1825721247");
+  const [userId, setUserId] = useState(null);
   const [username, setUserName] = useState(null);
   const [userSquad, setUserSquad] = useState(null);
   const [squads, setSquads] = useState([]);
@@ -110,12 +110,19 @@ const Squad = () => {
       navigator.vibrate(500); // Vibrate for 500ms
     }
   
-    const earning = (userSquad?.referralCount || 0) * 5000;
-    const difference = earning - (userSquad?.claimedReferral || 0);
-    const newClaimedReferral = (userSquad?.claimedReferral || 0) + difference;
-    const newTotalSquad = (userSquad?.totalBalance || 0) + difference;
+    const earning = Number(userSquad?.referralCount || 0) * 5000;
+    const difference = Number(earning) - Number(userSquad?.claimedReferral || 0);
+    const newClaimedReferral = Number(userSquad?.claimedReferral || 0) + Number(difference);
+    const newTotalSquad = Number(userSquad?.totalBalance || 0) + Number(difference);
     const totalBalance = Number(farmBalance || 0) + Number(newTotalSquad);
   
+    console.log('Earning:', earning);
+    console.log('Difference:', difference);
+    console.log('New Claimed Referral:', newClaimedReferral);
+    console.log('New Total Squad:', newTotalSquad);
+    console.log('Total Balance:', totalBalance);
+  
+
     try {
       const response = await axios.put(`https://lunarapp.thelunarcoin.com/backend/api/squad/update`, {
         userId: userId,
