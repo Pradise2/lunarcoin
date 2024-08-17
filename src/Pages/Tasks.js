@@ -59,8 +59,14 @@ const Tasks = () => {
     { id: 36, title: 'React to post', reward: 10000, link: " https://t.me/lunarcoincommunity/67" },
     { id: 37, title: 'React to post', reward: 10000, link: " https://t.me/lunarcoincommunity/68" },
     { id: 38, title: 'React to post', reward: 10000, link: " https://t.me/lunarcoincommunity/69" },
+    { id: 39, title: 'Retweet, like and comment', reward: 30000, link: " https://x.com/TheLunar_Coin/status/1824808957128409163?t=mhaxPc1V1sw0enKnnGM1Ag&s=19" },
+    { id: 40, title: 'Retweet, like and comment', reward: 30000, link: " https://x.com/TheLunar_Coin/status/1819788084306694218?t=mhaxPc1V1sw0enKnnGM1Ag&s=19" },
+    { id: 41, title: 'React to post', reward: 10000, link: " https://t.me/lunarcoincommunity/69" },
+    { id: 42, title: 'React to post', reward: 10000, link: " https://t.me/lunarcoincommunity/70" },
+    { id: 43, title: 'How Lunar Coin Gamify Will Change Your Life', reward: 100000, link: "https://youtu.be/oD3OfjhWoLc?si=oKPlFzHmAwErAl55" },
+    { id: 44, title: 'This Project will Print Billions for you', reward: 100000, link: "https://youtu.be/vemA3n8vp1Y?si=kgbLYJeCgEh3mqGA" },
   ];
-
+ 
   useEffect(() => {
     const initializeUserId = () => {
       if (window.Telegram && window.Telegram.WebApp) {
