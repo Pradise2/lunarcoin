@@ -49,6 +49,16 @@ const Tasks = () => {
     { id: 26, title: 'All About LUNAR COIN', reward: 100000, link: "https://youtu.be/5fAWfxcU5PM?si=yOX5WZsKeKzqYce2" },
     { id: 27, title: 'Traditional Currencies Vs Crypocurrencies', reward: 100000, link: " https://youtu.be/bnUviDsMJCQ?si=YfpEx_lDOArnX6sU " },  
     { id: 28, title: 'Impact of Tap-to-Earn Games in Crypto', reward: 100000, link: " https://youtu.be/CVKz0vDDGMk?si=84kuVY65mpLSgNrM " },  
+    { id: 29, title: 'Retweet, like and comment', reward: 30000, link: " https://x.com/TheLunar_Coin/status/1824176674037973400?t=stj1I-FKyR5VtOvhqjca3w&s=19" },
+    { id: 30, title: 'Retweet, like and comment', reward: 30000, link: " https://x.com/TheLunar_Coin/status/1824356402804015184?t=stj1I-FKyR5VtOvhqjca3w&s=19" },
+    { id: 31, title: 'Retweet, like and comment', reward: 30000, link: " https://x.com/TheLunar_Coin/status/1824450298707857588?t=stj1I-FKyR5VtOvhqjca3w&s=19" },
+    { id: 32, title: 'Retweet, like and comment', reward: 30000, link: " https://x.com/TheLunar_Coin/status/1824519085444440260?t=stj1I-FKyR5VtOvhqjca3w&s=19" },
+    { id: 33, title: 'Retweet, like and comment', reward: 30000, link: " https://x.com/TheLunar_Coin/status/1824720762139258986?t=stj1I-FKyR5VtOvhqjca3w&s=19" },
+    { id: 34, title: 'React to post', reward: 10000, link: " https://t.me/lunarcoincommunity/65" },
+    { id: 35, title: 'React to post', reward: 10000, link: " https://t.me/lunarcoincommunity/66" },
+    { id: 36, title: 'React to post', reward: 10000, link: " https://t.me/lunarcoincommunity/67" },
+    { id: 37, title: 'React to post', reward: 10000, link: " https://t.me/lunarcoincommunity/68" },
+    { id: 38, title: 'React to post', reward: 10000, link: " https://t.me/lunarcoincommunity/69" },
   ];
 
   useEffect(() => {
