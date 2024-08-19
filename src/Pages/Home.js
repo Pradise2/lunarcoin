@@ -10,7 +10,7 @@ import wallet from './wallet.png'
 
 const Home = () => {
   const [userData, setUserData] = useState(null);
-  const [userId, setUserId] = useState(null);
+  const [userId, setUserId] = useState('001');
   const [userName, setUserName] = useState(null);
   const [buttonText, setButtonText] = useState("Start");
   const [showRCFarm, setShowRCFarm] = useState(false);
@@ -200,15 +200,15 @@ const Home = () => {
   
     <div className="relative">
       <img src={coin} alt="LAR Coin" className="w-58 h-55 rounded-full" />
-      <div className="flex flex-col justify-center items-center space-y-1">
-        <p className="text-golden-moon font-medium text-xl">
+      <div className="flex flex-row justify-center items-center ">
+        <p className="text-white font-medium text-2xl">
           {userData && isValidNumber(userData.FarmBalance) ? userData.FarmBalance.toLocaleString() : "0"}
         </p>
-        <p className="bg-custom bg-clip-text text-transparent text-2xl font-black">LAR</p>
+        <p className="bg-custom bg-clip-text text-transparent text-2xl font-black">&nbsp;LAR</p>
       </div>
     </div>
   
-    <div className="relative bg-custom bg-opacity-40 text-card-foreground p-2 rounded-3xl w-full max-w-md text-center min-h-[20vh] flex flex-col justify-center space-y-4">
+    <div className="relative bg-custom bg-opacity-40 text-card-foreground p-2 rounded-3xl w-full max-w-md text-center min-h-[20vh] flex flex-col justify-center space-y-3">
       <p className="text-white font-normal text-xl">Farming Points</p>
       <div className="flex items-center justify-center space-x-2">
         <p className="text-4xl font-medium text-white">
