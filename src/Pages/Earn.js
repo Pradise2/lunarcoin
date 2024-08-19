@@ -44,7 +44,7 @@ const Earn = () => {
           </div>
           <button 
             onClick={handleClaimClick} 
-            className="bg-custom text-white py-2 px-5 rounded-xl hover:bg-custom-dark transition-colors"
+            className="bg-black text-white py-2 px-5 rounded-xl hover: transition-colors"
           >
             Claim
           </button>
@@ -64,7 +64,7 @@ const Earn = () => {
           </div>
           <button 
             onClick={handleClaimClick} 
-            className="bg-custom text-white py-2 px-5 rounded-xl hover:bg-custom-dark transition-colors"
+            className="bg-black text-white py-2 px-5 rounded-xl hover: transition-colors"
           >
             Claim
           </button>
@@ -75,15 +75,13 @@ const Earn = () => {
           <div className="flex items-center">
             <div>
               <p className="font-normal">Daily Combo Soon</p>
-              <p className="text-golden-moon flex items-center">
-                <img aria-hidden="true" alt="coin-icon" src={logo} className="mr-2 w-6 h-6"/>
-              </p>
+              
             </div>
           </div>
           <button 
             className="bg-darkGray text-white py-2 px-5 rounded-xl cursor-not-allowed"
           >
-            Soon
+            ...
           </button>
         </div>
       </div>
