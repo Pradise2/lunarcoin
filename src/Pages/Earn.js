@@ -27,7 +27,7 @@ const Earn = () => {
       </div>
 
       {/* Daily Bonus Section */}
-      <div className="mt-9 space-y-6 w-4/5 relative z-10">
+      <div className="mt-9 space-y-6 w-full relative z-10">
         {/* Daily Bonus Card */}
         <div className="bg-golden p-4 rounded-xl flex justify-between items-center shadow-lg">
           <div className="flex items-center">
