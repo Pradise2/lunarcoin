@@ -20,9 +20,10 @@ const Earn = () => {
 
       {/* Main Heading */}
       <div className="relative z-10 text-white text-center">
-        <h1 className="text-2xl font-bold leading-relaxed">
-          The more you claim, the more you gain, <br/>
-          fortune follows those who sustain
+        <h1 className="text-xl font-bold leading-relaxed">
+        The more you claim, the more you <br/>
+ gain, fortune follows <br/>
+those who sustain
         </h1>
       </div>
 
