@@ -19,13 +19,14 @@ const Earn = () => {
       <div className="absolute inset-0 bg-black bg-opacity-70"></div>
 
       {/* Main Heading */}
-      <div className="relative z-10 text-white text-center">
-        <h1 className="text-xl font-bold leading-relaxed">
-        The more you claim, the more you <br/>
- gain, fortune follows <br/>
-those who sustain
-        </h1>
-      </div>
+      <div className="relative z-10 text-white text-center p-2 sm:p-4">
+    <h1 className="text-xl sm:text-2xl md:text-3xl font-bold leading-snug">
+      The more you claim, the more you <br />
+      gain, fortune follows <br />
+      those who sustain
+    </h1>
+  </div>
+
 
       {/* Daily Bonus Section */}
       <div className="mt-9 space-y-6 w-full  z-10">
