@@ -6,11 +6,12 @@ import './bg.css';
 import { ClipLoader } from 'react-spinners';
 import coin from './log.png';
 import coin2 from './logo.png';
+import wallet from './wallet.png'
 
 const Home = () => {
   const [userData, setUserData] = useState(null);
-  const [userId, setUserId] = useState(null);
-  const [userName, setUserName] = useState(null);
+  const [userId, setUserId] = useState("001");
+  const [userName, setUserName] = useState("Akin");
   const [buttonText, setButtonText] = useState("Start");
   const [showRCFarm, setShowRCFarm] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -183,40 +184,55 @@ const Home = () => {
   const isValidNumber = (value) => typeof value === 'number' && !isNaN(value);
 
   return (
-    <div className="min-h-screen bg-cover text-white flex flex-col items-center p-7 space-y-7">
-      <div className="relative pt-6 mb-3 pb-">
-        <img src={coin} alt="LAR Coin" className="w-63 h-60 rounded-full" />
+    <div className="relative min-h-screen bg-cover text-white flex flex-col items-center p-4 space-y-6" >
+    <div className="absolute inset-0 bg-black bg-opacity-70"></div>
+    <div className="relative w-11/12">
+      <div className="flex ml-2 mr-2 flex-row justify-between">   
+        <img aria-hidden="true" alt="team-icon" src={coin2} width="40" height="40" />
+        <img aria-hidden="true" alt="team-icon" src={wallet} width="40" height="40" />
       </div>
-      <div className="flex flex-row justify-between items-center space-x-4">
-        <p className="text-white font-bold text-xl">HI, {userName}</p>
-        <p className="text-golden-moon font-bold text-xl">
-          {userData && isValidNumber(userData.FarmBalance) ? userData.FarmBalance.toLocaleString() : "0"} <span className="text-golden-moon">LAR</span>
+      <div className="flex mt-3">
+        <p className="text-white font-black text-xl text-center">Hi,&nbsp;
+          <span className="text-lg font-normal">{userName}</span>
         </p>
       </div>
-
-      <div className="bg-zinc-950 bg-opacity-80 text-card-foreground p-2 rounded-3xl w-full max-w-md text-center min-h-[20vh] flex flex-col justify-center space-y-4">
-        <p className="text-zinc-400 text-xl ">Farming Points</p>
-        <div className="flex items-center justify-center space-x-2">
-          <img aria-hidden="true" alt="team-icon" src={coin2} className="mr-2" width="25" height="5" />
-          <p className="text-4xl font-normal text-primary">
-            {userData && isValidNumber(userData.FarmReward) ? userData.FarmReward.toFixed(1) : "0.0"} <span className="text-golden-moon">LAR</span>
-          </p>
-        </div>
-        <p className="font-extrabold text-red-600"><FormattedTime time={userData?.FarmTime || 0}/></p>
-        <div className="space-y-4 w-full flex items-center flex-col">
-          <button
-            className={`text-white hover:bg-secondary/80 px-6 py-3 rounded-xl w-full max-w-md ${buttonText === "Farming..." ? "bg-zinc-800 bg-opacity-70" : "bg-gradient-to-r from-golden-moon"}`}
-            onClick={handleButtonClick}
-          >
-            {buttonText}
-          </button>
-        </div>
-      </div>
-
-      <div className="w-full max-w-md bg-zinc-900 fixed bottom-0 left-0 flex justify-around py-1">
-        <Footer />
+    </div>
+  
+    <div className="relative">
+      <img src={coin} alt="LAR Coin" className="w-58 h-55 rounded-full" />
+      <div className="flex flex-col justify-center items-center space-y-1">
+        <p className="text-golden-moon font-medium text-xl">
+          {userData && isValidNumber(userData.FarmBalance) ? userData.FarmBalance.toLocaleString() : "0"}
+        </p>
+        <p className="bg-custom bg-clip-text text-transparent text-2xl font-black">LAR</p>
       </div>
     </div>
+  
+    <div className="relative bg-custom bg-opacity-40 text-card-foreground p-2 rounded-3xl w-full max-w-md text-center min-h-[20vh] flex flex-col justify-center space-y-4">
+      <p className="text-white font-normal text-xl">Farming Points</p>
+      <div className="flex items-center justify-center space-x-2">
+        <p className="text-4xl font-medium text-white">
+          {userData && isValidNumber(userData.FarmReward) ? userData.FarmReward.toFixed(1) : "0.0"} 
+          <span className="text-white font-bold">&nbsp;LAR</span>
+        </p>
+      </div>
+      <p className="font-extrabold text-vividRed"><FormattedTime time={userData?.FarmTime || 0} /></p>
+      <div className="space-y-4 w-full flex items-center flex-col">
+        <button
+          className={`text-white hover:bg-black px-6 py-3 rounded-xl w-full max-w-md ${buttonText === "Farming..." ? "bg-black" : "bg-gradient-to-r from-golden-moon"}`}
+          onClick={handleButtonClick}
+        >
+          {buttonText}
+        </button>
+      </div>
+    </div>
+  
+    <div className=" w-full max-w-md rounded-3xl bg-darkGray fixed bottom-0 left-0 flex justify-around py-1">
+      <Footer />
+    </div>
+  </div>
+  
+  
   );
 };
 

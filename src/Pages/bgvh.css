@@ -1,9 +1,5 @@
-.vide0-bg{
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    z-index: -1;
-}
+.bg-ove{
+    background-image: url('./lay.jpg');
+    background-position: center;
+    background-size: cover;
+};
