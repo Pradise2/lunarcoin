@@ -13,11 +13,9 @@ const Earn = () => {
   };
 
   return (
-    <div className="relative min-h-screen bg-ove text-white flex flex-col items-center p-4 space-y-6">
-      
-      {/* Black Overlay */}
-      <div className="absolute inset-0 bg-black bg-opacity-70"></div>
-
+    <div
+    className="relative min-h-screen bg-black bg-blur-sm bg-don bg-[center_top_5rem] bg-no-repeat text-white flex flex-col items-center p-4 space-y-4 ">
+      <div className="absolute inset-0 bg-black bg-opacity-60"></div>
       {/* Main Heading */}
       <div className="relative z-10 text-white text-center p-2 sm:p-4">
     <h1 className="text-xl sm:text-2xl md:text-3xl font-bold leading-snug">
