@@ -181,7 +181,10 @@ const Home = () => {
           className="absolute transform -translate-y-1/2 top-1/2 flex justify-center items-center"
           style={{ top: '50%' }}
         >
-          <ClipLoader color="#FFD700" size={100} speedMultiplier={0} />
+          <ClipLoader 
+          color="#FFD700" 
+          size={100} 
+          speedMultiplier={1} />
         </div>
       </div>
     );
