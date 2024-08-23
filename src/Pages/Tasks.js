@@ -7,6 +7,9 @@ import './bg.css';
 import RCTasks from '../Component/RCTasks';
 import { motion, AnimatePresence } from 'framer-motion';
 import logo from './logo.png';
+import coin from './log.png';
+import coin2 from './logo.png';
+import wallet from './wallet.png'
 
 const Tasks = () => {
   const [userData, setUserData] = useState(null);

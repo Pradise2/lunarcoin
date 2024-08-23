@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { getUserFromFarm, updateFarmBalance } from '../utils/firestoreFunctions';
+import { getUserFromFarm } from '../utils/firestoreFunctions';
 import Footer from '../Component/Footer';
 import { ClipLoader } from 'react-spinners';
 import './bg.css';
-import { motion, AnimatePresence } from 'framer-motion';
 import axios from 'axios';
 
 const Squad = () => {
@@ -13,23 +12,20 @@ const Squad = () => {
   const [userSquad, setUserSquad] = useState(null);
   const [squads, setSquads] = useState([]);
   const [farmData, setFarmData] = useState(null);
-  const [farmBalance, setFarmBalance] = useState(0); // State for farmBalance
+  const [farmBalance, setFarmBalance] = useState(0);
   const [loading, setLoading] = useState(true);
   const [showRCSquad, setShowRCSquad] = useState(false);
-  const [error, setError] = useState(null); // Define error state
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Check if Telegram WebApp is available
     if (window.Telegram && window.Telegram.WebApp) {
       const { WebApp } = window.Telegram;
-
-      // Expand the WebApp
       WebApp.expand();
-
       const user = WebApp.initDataUnsafe?.user;
       if (user) {
         setUserId(user.id);
         setUserName(user.username);
+        console.log('User data available:', user);
       } else {
         console.error('User data is not available.');
       }
@@ -38,53 +34,43 @@ const Squad = () => {
     }
   }, []);
 
-  useEffect(() => { 
-    const fetchSquadData = async () => {
-      try {
-        const response = await axios.get(`https://lunarapp.thelunarcoin.com/backend/api/squad/${userId}`);
-        const { userSquad, squads } = response.data;
-        setUserSquad(userSquad);
-        setSquads(squads || []); // Ensure squads is an array
-        console.log('Fetched squad data:', { userSquad, squads }); // Log the data
-      } catch (error) {
-        console.error('Error fetching squad data:', error);
-        setError('Error fetching squad data');
-        // Consider implementing an error retry mechanism or user feedback
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (userId) {
-      fetchSquadData();
-    }
-  }, [userId]);
-
   useEffect(() => {
-    const fetchFarmData = async () => {
+    const fetchData = async () => {
       try {
-        const data = await getUserFromFarm(userId);
-        setFarmData(data);
-        setFarmBalance(data.FarmBalance || 0); // Fetch and set farmBalance
+        const [squadResponse, farmData] = await Promise.all([
+          axios.get(`https://lunarapp.thelunarcoin.com/backend/api/squad/${userId}`),
+          getUserFromFarm(userId),
+        ]);
+
+        const { userSquad, squads } = squadResponse.data;
+        setUserSquad(userSquad);
+        setSquads(squads || []);
+        setFarmData(farmData);
+        setFarmBalance(farmData.FarmBalance || 0);
+        console.log('Fetched squad data:', { userSquad, squads });
+        console.log('Fetched farm data:', farmData);
       } catch (error) {
-        console.error('Error fetching farm data:', error);
+        console.error('Error fetching data:', error);
+        setError('Error fetching data');
       } finally {
         setLoading(false);
       }
     };
 
     if (userId) {
-      fetchFarmData();
+      console.log('Fetching data for userId:', userId);
+      fetchData();
     }
   }, [userId]);
-
 
   const copyToClipboard = () => {
     const reflink = `https://t.me/ThelunarCoin_bot?start=ref_${userId}`;
+    console.log('Referral link:', reflink);
 
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(reflink).then(() => {
         setCopied(true);
+        console.log('Copied to clipboard!');
         setTimeout(() => setCopied(false), 1000);
       }).catch(err => {
         console.error('Failed to copy text:', err);
@@ -97,6 +83,7 @@ const Squad = () => {
       try {
         document.execCommand('copy');
         setCopied(true);
+        console.log('Copied to clipboard using fallback method!');
         setTimeout(() => setCopied(false), 2000);
       } catch (err) {
         console.error('Failed to copy:', err);
@@ -109,19 +96,19 @@ const Squad = () => {
     if (navigator.vibrate) {
       navigator.vibrate(500); // Vibrate for 500ms
     }
-  
+
     const earning = Number(userSquad?.referralCount || 0) * 5000;
     const difference = Number(earning) - Number(userSquad?.claimedReferral || 0);
     const newClaimedReferral = Number(userSquad?.claimedReferral || 0) + Number(difference);
     const newTotalSquad = Number(userSquad?.totalBalance || 0) + Number(difference);
     const totalBalance = Number(farmBalance || 0) + Number(newTotalSquad);
-  
+
     console.log('Earning:', earning);
     console.log('Difference:', difference);
     console.log('New Claimed Referral:', newClaimedReferral);
     console.log('New Total Squad:', newTotalSquad);
     console.log('Total Balance:', totalBalance);
-  
+
     try {
       const response = await axios.put(`https://lunarapp.thelunarcoin.com/backend/api/squad/update`, {
         userId: userId,
@@ -129,18 +116,15 @@ const Squad = () => {
         totalbalance: totalBalance.toFixed(2),
         totalsquad: newTotalSquad,
       });
-  
+
       console.log('Claim response:', response.data);
-  
-      // Re-fetch updated squad and farm data
+
       const updatedSquadResponse = await axios.get(`https://lunarapp.thelunarcoin.com/backend/api/squad/${userId}`);
       const updatedSquad = updatedSquadResponse.data.userSquad;
       const updatedFarmData = await getUserFromFarm(userId);
-  
-      console.log('Claim update response:', updatedSquadResponse.data);
-  
-      console.log('farm update response:', updatedFarmData.data);
-  
+
+      console.log('Updated squad data:', updatedSquad);
+      console.log('Updated farm data:', updatedFarmData);
 
       setUserSquad(updatedSquad);
       setFarmBalance(updatedFarmData.FarmBalance || 0);
@@ -148,31 +132,49 @@ const Squad = () => {
       console.error('Error during claim:', error);
       setError('Error during claim');
     }
-  
+
     setShowRCSquad(true);
     setTimeout(() => setShowRCSquad(false), 2000);
   };
-  
 
- 
-  const totalBalance = Number(farmBalance || 0) + Number(userSquad?.totalSquad || 0);
+  const totalBalance = Number(farmBalance || 0) + Number(userSquad?.claimedReferral || 0);
   const displayTotalBalance = totalBalance.toLocaleString('en-US', {
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,
   });
-
-  // Format the difference with commas and two decimal places
- 
+  console.log('Display Total Balance:', displayTotalBalance);
 
   const earning = Number(userSquad?.referralCount || 0) * 5000;
   const difference = Number(earning) - Number(userSquad?.claimedReferral || 0);
- 
+
   const formattedDifference = difference.toLocaleString('en-US', {
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,
   });
+  console.log('Formatted Difference:', formattedDifference);
 
   const isClaimable = difference > 0;
+  console.log('Is claimable:', isClaimable);
+
+  if (loading) {
+    return (
+      <div
+        className="relative min-h-screen bg-black bg-blur-sm bg-don bg-center bg-no-repeat text-white flex items-center justify-center p-4 space-y-4"
+      >
+        <div className="absolute inset-0 bg-black bg-opacity-60"></div>
+        <div
+          className="absolute transform -translate-y-1/2 top-1/2 flex justify-center items-center"
+          style={{ top: '50%' }}
+        >
+          <ClipLoader
+            color="#FFD700"
+            size={100}
+            speedMultiplier={1}
+          />
+        </div>
+      </div>
+    );
+  }
 
 
   return (
