@@ -222,7 +222,7 @@ const Tasks = () => {
           [taskId]: 'claim',
         }
       }));
-    }, 50000);
+    }, 17000);
   };
 
   const filteredTasks = tasks.filter(task => {
