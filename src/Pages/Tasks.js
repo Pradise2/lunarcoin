@@ -236,19 +236,23 @@ const Tasks = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex justify-center items-center bg-cover text-white p-4">
-        <div className="flex flex-col items-center space-y-4">
-          <h1 className="text-white text-4xl font-normal">
-            <ClipLoader
-              color="#FFD700"
-              size={60}
-              speedMultiplier={1}
-            />
-          </h1>
+      <div
+        className="relative min-h-screen bg-black bg-blur-sm bg-don bg-center bg-no-repeat text-white flex items-center justify-center p-4 space-y-4"
+      >
+        <div className="absolute inset-0 bg-black bg-opacity-60"></div>
+        <div 
+          className="absolute transform -translate-y-1/2 top-1/2 flex justify-center items-center"
+          style={{ top: '50%' }}
+        >
+          <ClipLoader 
+          color="#FFD700" 
+          size={100} 
+          speedMultiplier={1} />
         </div>
       </div>
     );
   }
+  
 
   return (
     <div className="bg-cover min-h-screen flex flex-col">
