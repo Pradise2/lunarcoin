@@ -31,7 +31,7 @@ const Squad = () => {
       }
     } else {
       console.error('Telegram WebApp script is not loaded.');
-    }
+    } 
   }, []);
 
   useEffect(() => {
@@ -92,7 +92,7 @@ const Squad = () => {
     }
   };
 
-  const handleClaim = async () => {
+  const handleClaim = async (userId) => {
     if (navigator.vibrate) {
       navigator.vibrate(500); // Vibrate for 500ms
     }
@@ -203,7 +203,7 @@ const Squad = () => {
         <div className="flex p-1 justify-center">
           <button
             className={`px-4 py-2 rounded-xl ${isClaimable ? 'bg-golden-moon text-white ' : 'bg-gray-500 text-white'}`}
-            onClick={isClaimable ? handleClaim : null}
+            onClick={() => isClaimable ? handleClaim(userSquad?.userId) : null}
             disabled={!isClaimable}
           >
             {isClaimable ? 'Claim' : 'Claimed'}
