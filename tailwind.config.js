@@ -14,6 +14,7 @@ module.exports = {
         'golden-moon': '#E5C07B',
         sinc: '#E6E6E6',
         fin:'#D1D1D1',
+        hy: '#3F3F3F'
       },
       backgroundImage: {
         'custom': 'linear-gradient(91.68deg, rgba(255, 215, 0, 0.4) -2.31%, rgba(187, 158, 2, 0.4) 38.68%, rgba(187, 158, 2, 0.4) 59.17%, rgba(255, 215, 0, 0.4) 100.15%)',
