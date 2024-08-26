@@ -1,111 +1,119 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Footer from '../Component/Footer';
 import './Spinner.css';
 import { ClipLoader } from 'react-spinners';
-import { addUserTasks, getUserTasks, updateFarmBalance, getUserFromFarm } from '../utils/firestoreFunctions';
+import { updateFarmBalance, getUserFromFarm } from '../utils/firestoreFunctions';
 import './bg.css';
 import RCTasks from '../Component/RCTasks';
 import { motion, AnimatePresence } from 'framer-motion';
 import logo from './logo.png';
+import facebook from './facebook.png'
+import youtube from './youtube.png'
+import twitter from './twitter.png'
+import axios from 'axios';
+import telegram  from './telegram.png';
 
 const Tasks = () => {
-  const [userData, setUserData] = useState(null);
-  const [userId, setUserId] = useState('001'); // Replace with dynamic ID if possible
+  const [userData, setUserData] = useState({ TasksStatus: {}, TasksComplete: {} });
+  const [userId, setUserId] = useState(null); // Replace with dynamic ID if possible
   const [taskFilter, setTaskFilter] = useState('new');
   const [loadingTask, setLoadingTask] = useState(null);
+  const [specialTask, setSpecialTask] = useState([]);
   const [farmData, setFarmData] = useState(null);
   const [taskReadyToClaim, setTaskReadyToClaim] = useState(null);
   const [showRCTasks, setShowRCTasks] = useState(false);
-  const [selectedTask, setSelectedTask] = useState(null); // New state for selected task
-  const [showGoButton, setShowGoButton] = useState(false); // New state for showing "Go" button
-  const [loading, setLoading] = useState(true); // New state for loading
+  const [selectedTask, setSelectedTask] = useState(null);
+  const [showGoButton, setShowGoButton] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [dailyTask, setDailyTask] = useState([]);
 
-  const tasks = [
-    { id: 1, title: 'Follow Community', reward: 50000, link: "https://t.me/lunarcoincommunity" },
-    { id: 2, title: 'Follow Twitter', reward: 50000, link: "https://x.com/TheLunar_Coin " },
-    { id: 3, title: 'Retweet, like and comment', reward: 30000, link: " https://x.com/TheLunar_Coin/status/1817636899739119627?t=YS-_UF6vNOY2uKjLeXFYpw&s=19" },
-    { id: 4, title: 'Retweet, like and comment', reward: 30000, link: " https://x.com/TheLunar_Coin/status/1816780259611578582?t=YS-_UF6vNOY2uKjLeXFYpw&s=19" },
-    { id: 5, title: 'Retweet, like and comment', reward: 30000, link: " https://x.com/TheLunar_Coin/status/1816519875499819153?t=YS-_UF6vNOY2uKjLeXFYpw&s=19" },
-    { id: 6, title: 'Retweet, like and comment', reward: 30000, link: " https://x.com/TheLunar_Coin/status/1815830483969958010?t=3lo1tvX1VKN669SG9jmDtg&s=19" },
-    { id: 7, title: 'Retweet, like and comment', reward: 30000, link: " https://x.com/TheLunar_Coin/status/1815147922029199429?t=3lo1tvX1VKN669SG9jmDtg&s=19" },
-    { id: 8, title: 'Retweet, like and comment', reward: 30000, link: " https://x.com/TheLunar_Coin/status/1816519875499819153?t=YS-_UF6vNOY2uKjLeXFYpw&s=19" },
-    { id: 9, title: 'Retweet, like and comment', reward: 30000, link: " https://x.com/TheLunar_Coin/status/1815158306757050406?t=3lo1tvX1VKN669SG9jmDtg&s=19" },
-    { id: 10, title: 'Retweet, like and comment', reward: 30000, link: " https://x.com/TheLunar_Coin/status/1815378630198841422?t=3lo1tvX1VKN669SG9jmDtg&s=19" },
-    { id: 11, title: 'Retweet, like and comment', reward: 30000, link: " https://x.com/TheLunar_Coin/status/1815818811829796980?t=3lo1tvX1VKN669SG9jmDtg&s=19" },
-    { id: 12, title: 'Retweet, like and comment', reward: 30000, link: " https://x.com/TheLunar_Coin/status/1815830483969958010?t=3lo1tvX1VKN669SG9jmDtg&s=19" },
-    { id: 13, title: 'Subscribe to YouTube', reward: 50000, link: "https://youtube.com/@thelunarcoinofficial?si=qQttWxKSGuQpuoim"}, 
-    { id: 14, title: 'React to post', reward: 30000, link: " https://t.me/lunarcoincommunity/23" },
-    { id: 15, title: 'React to post', reward: 30000, link: " https://t.me/lunarcoincommunity/12" },
-    { id: 16, title: 'React to post', reward: 30000, link: " https://t.me/lunarcoincommunity/15" },
-    { id: 17, title: 'React to post', reward: 30000, link: " https://t.me/lunarcoincommunity/16" },
-    { id: 18, title: 'React to post', reward: 30000, link: " https://t.me/lunarcoincommunity/20" },
-    { id: 19, title: 'React to post', reward: 30000, link: " https://t.me/lunarcoincommunity/22" },
-    { id: 20, title: 'Follow Facebook', reward: 50000, link: " https://www.facebook.com/profile.php?id=61563027839976&mibextid=LQQJ4d " },
-    { id: 21, title: 'Boost Telegram Community', reward: 50000, link: " https://t.me/boost/lunarcoincommunity " },
-  ];
 
-  useEffect(() => {
-    const initializeUserId = () => {
-      if (window.Telegram && window.Telegram.WebApp) {
-        const { WebApp } = window.Telegram;
-        WebApp.expand();
-        const user = WebApp.initDataUnsafe?.user;
-        if (user) {
-          setUserId(user.id);
-        } else {
-          console.error('User data is not available.');
-        }
+  const taskLogos = {
+    '1': youtube,
+    '2': facebook,
+    '3': telegram,
+    '4': twitter 
+  };
+
+  
+  const dtaskLogos = {
+    '1': youtube,
+    '2': youtube,
+    '3': youtube,
+    '4': youtube,
+    '5': facebook,
+    '6': facebook,
+    '7': twitter,
+    '8': twitter,
+    '9': telegram,
+    '10': telegram
+
+  };
+
+const test ={
+
+}
+
+  const initializeUserId = useCallback(() => {
+    if (window.Telegram && window.Telegram.WebApp) {
+      const { WebApp } = window.Telegram;
+      WebApp.expand();
+      const user = WebApp.initDataUnsafe?.user;
+      if (user) {
+        setUserId(user.id);
+        console.log('User ID set from Telegram:', user.id);
       } else {
-        console.error('Telegram WebApp script is not loaded.');
+        console.error('User data is not available.');
       }
-    };
-    initializeUserId();
+    } else {
+      console.error('Telegram WebApp script is not loaded.');
+    }
   }, []);
 
   useEffect(() => {
-    const fetchUserData = async () => {
+    initializeUserId();
+  }, [initializeUserId]);
+
+  useEffect(() => { 
+    const fetchSpecialTaskData = async () => {
       try {
-        const data = await getUserTasks(userId);
-        if (data) {
-          let updatedData = { ...data };
-          let newTaskAdded = false;
-          tasks.forEach(task => {
-            if (!updatedData.TasksComplete.hasOwnProperty(task.id)) {
-              updatedData.TasksComplete[task.id] = false;
-              newTaskAdded = true;
-            }
-            if (!updatedData.TasksStatus.hasOwnProperty(task.id)) {
-              updatedData.TasksStatus[task.id] = 'start';
-              newTaskAdded = true;
-            }
-          });
-          if (newTaskAdded) {
-            await addUserTasks(userId, updatedData);
-          }
-          setUserData(updatedData);
-          if (updatedData.taskFilter) {
-            setTaskFilter(updatedData.taskFilter);
-          }
-        } else {
-          const initialData = {
-            TasksComplete: {},
-            TasksStatus: {},
-          };
-          tasks.forEach(task => {
-            initialData.TasksComplete[task.id] = false;
-            initialData.TasksStatus[task.id] = 'start';
-          });
-          await addUserTasks(userId, initialData);
-          setUserData(initialData);
-        }
-        setLoading(false);
+        const response = await axios.get(`https://lunarapp.thelunarcoin.com/backend/api/specialtask/${userId}`);
+        const special = response.data;
+        setSpecialTask(special);
+        console.log('Fetched SpecialTask', special); 
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error('Error fetching special task data:', error);
+        setError('Error fetching special task data');
+      } finally {
         setLoading(false);
       }
     };
+
     if (userId) {
-      fetchUserData();
+      fetchSpecialTaskData();
+      console.log('Fetching special tasks for user ID:', userId);
+    }
+  }, [userId]);
+
+  useEffect(() => { 
+    const fetchDailyTaskData = async () => {
+      try {
+        const response = await axios.get(`https://lunarapp.thelunarcoin.com/backend/api/dailytask/${userId}`);
+        const daily = response.data;
+        setDailyTask(daily);
+        console.log('Fetched DailyTask', daily); 
+      } catch (error) {
+        console.error('Error fetching special task data:', error);
+        setError('Error fetching special task data');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (userId) {
+      fetchDailyTaskData();
+      console.log('Fetching special tasks for user ID:', userId);
     }
   }, [userId]);
 
@@ -114,102 +122,219 @@ const Tasks = () => {
       try {
         const data = await getUserFromFarm(userId);
         setFarmData(data);
+        console.log('Fetched farm data:', data);
       } catch (error) {
         console.error('Error fetching farm data:', error);
       }
     };
     if (userId) {
       fetchFarmData();
+      console.log('Fetching farm data for user ID:', userId);
     }
   }, [userId]);
 
-  useEffect(() => {
-    const saveUserData = async () => {
-      if (userId && userData) {
-        try {
-          await addUserTasks(userId, userData);
-        } catch (error) {
-          console.error('Error saving data:', error);
-        }
+  const saveUserData = useCallback(async () => {
+    if (userId && userData) {
+      try {
+        console.log('Saving user data:', userData);
+        // Your save logic here
+      } catch (error) {
+        console.error('Error saving data:', error);
       }
-    };
+    }
+  }, [userId, userData]);
 
-    const handleBeforeUnload = (e) => {
-      saveUserData();
-      e.preventDefault();
-      e.returnValue = '';
-    };
-
-    window.addEventListener('beforeunload', handleBeforeUnload);
+  useEffect(() => {
+    window.addEventListener('beforeunload', saveUserData);
     const saveInterval = setInterval(saveUserData, 10000);
 
     return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
+      window.removeEventListener('beforeunload', saveUserData);
       clearInterval(saveInterval);
       saveUserData();
     };
-  }, [userId, userData]);
+  }, [saveUserData]);
 
-  const handleClaimClick = async (taskId, reward) => {
-    const task = tasks.find(t => t.id === taskId);
-
+  const handleClaimClick = async (userId, taskId, reward) => {
+    const task = specialTask.find(t => t.taskId === taskId);
+  
+    console.log('Claim button clicked for task:', task);
+  
     if (navigator.vibrate) {
       navigator.vibrate(500);
+      console.log('Vibration triggered.');
     }
-
-    setUserData(prevData => ({
-      ...prevData,
-      TasksComplete: {
-        ...prevData.TasksComplete,
-        [taskId]: true,
-      },
-      TasksStatus: {
-        ...prevData.TasksStatus,
-        [taskId]: 'completed',
-      }
-    }));
-
+  
     try {
-      const updatedHomeData = await getUserFromFarm(userId);
-      const newFarmBalance = updatedHomeData.FarmBalance + reward;
+      await axios.put('https://lunarapp.thelunarcoin.com/backend/api/specialtask/updateStatus', {
+        userId,
+        taskId,
+      });
+      console.log('Updated task status to completed for taskId:', taskId);
+  
+      // Update the specific task's status to "completed"
+      setSpecialTask(prevTasks => prevTasks.map(task => 
+        task.taskId === taskId ? { ...task, status: 'complete' } : task
+      ));
+  
+      setUserData(prevData => ({
+        ...prevData,
+        TasksComplete: {
+          ...prevData.TasksComplete,
+          [taskId]: true,
+        },
+        TasksStatus: {
+          ...prevData.TasksStatus,
+          [taskId]: 'completed',
+        }
+      }));
+      console.log('Updated userData after task completion:', userData);
+  
+      const updatedFarmData = await getUserFromFarm(userId);
+      const newFarmBalance = updatedFarmData.FarmBalance + reward;
+      console.log('New farm balance after reward:', newFarmBalance);
+  
       await updateFarmBalance(userId, newFarmBalance);
+      console.log('Farm balance updated in the database.');
+  
       setFarmData(prevData => ({
         ...prevData,
         FarmBalance: newFarmBalance,
       }));
+      console.log('Updated farmData state:', farmData);
+  
       setSelectedTask(task);
       setShowRCTasks(true);
       setShowGoButton(true);
-      setTimeout(() => setShowRCTasks(false), 2000);
+      console.log('Showing reward collection modal.');
+  
+      setTimeout(() => setShowRCTasks(false), 1000);
     } catch (error) {
-      console.error('Error updating FarmBalance:', error);
+      console.error('Error updating task status:', error);
     }
   };
 
-  const handleStartClick = (taskId, link) => {
-    setLoadingTask(taskId);
-    window.open(link, '_blank');
-    setTimeout(() => {
-      setLoadingTask(null);
-      setTaskReadyToClaim(taskId);
+  const handleDailyClaim = async (userId, taskId, reward) => {
+    const dtask = dailyTask.find(t => t.taskId === taskId);
+  
+    console.log('Claim button clicked for task:', dtask);
+  
+    if (navigator.vibrate) {
+      navigator.vibrate(500);
+      console.log('Vibration triggered.');
+    }
+  
+    try {
+      await axios.put('https://lunarapp.thelunarcoin.com/backend/api/dailytask/updateStatus', {
+        userId,
+        taskId,
+      });
+      console.log('Updated task status to completed for taskId:', taskId);
+  
+      // Update the specific task's status to "completed"
+      setDailyTask(prevTasks => prevTasks.map(dtask => 
+        dtask.taskId === taskId ? { ...dtask, status: 'complete' } : dtask
+      ));
+  
       setUserData(prevData => ({
         ...prevData,
+        TasksComplete: {
+          ...prevData.TasksComplete,
+          [taskId]: true,
+        },
         TasksStatus: {
           ...prevData.TasksStatus,
-          [taskId]: 'claim',
+          [taskId]: 'completed',
         }
       }));
-    }, 20000);
+      console.log('Updated userData after task completion:', userData);
+  
+      const updatedFarmData = await getUserFromFarm(userId);
+      const newFarmBalance = updatedFarmData.FarmBalance + reward;
+      console.log('New farm balance after reward:', newFarmBalance);
+  
+      await updateFarmBalance(userId, newFarmBalance);
+      console.log('Farm balance updated in the database.');
+  
+      setFarmData(prevData => ({
+        ...prevData,
+        FarmBalance: newFarmBalance,
+      }));
+      console.log('Updated farmData state:', farmData);
+  
+      setSelectedTask(dtask);
+      setShowRCTasks(true);
+      setShowGoButton(true);
+      console.log('Showing reward collection modal.');
+  
+      setTimeout(() => setShowRCTasks(false), 1000);
+    } catch (error) {
+      console.error('Error updating task status:', error);
+    }
   };
 
-  const filteredTasks = tasks.filter(task => {
-    if (taskFilter === 'new') {
-      return userData && userData.TasksStatus[task.id] !== 'completed';
-    } else if (taskFilter === 'completed') {
-      return userData && userData.TasksStatus[task.id] === 'completed';
+  
+  const handleStartClick = async (userId, taskId, link) => {
+    setLoadingTask(taskId);
+    console.log('Start button clicked for taskId:', taskId);
+    
+    window.open(link, '_blank');
+    
+    try {
+      await axios.put('https://lunarapp.thelunarcoin.com/backend/api/specialtask/update', {
+        userId,
+        taskId,
+      });
+     
+  
+      setTimeout(() => {
+        setLoadingTask(null);
+  
+        // Update the specific task's status to "claim"
+        setSpecialTask(prevTasks => prevTasks.map(task => 
+          task.taskId === taskId ? { ...task, status: 'claim' } : task
+        ));
+        
+        console.log('Task ready to claim:', taskId);
+      }, 17000);
+    } catch (error) {
+      console.error('Error starting task:', error);
+      setLoadingTask(null);
     }
-    return true;
-  });
+  };
+  
+  const handleDailyStart = async (userId, taskId, link) => {
+    setLoadingTask(taskId);
+    console.log('Start button clicked for taskId:', taskId);
+  
+    // Open the link immediately
+    window.open(link, '_blank');
+  
+    try {
+      await axios.put('https://lunarapp.thelunarcoin.com/backend/api/dailytask/update', {
+        userId,
+        taskId,
+      });
+      console.log('Updated task status to "started" for taskId:', taskId);
+  
+      setTimeout(() => {
+        setLoadingTask(null);
+        // Update the daily task's status to "claim"
+        setDailyTask(prevTasks => prevTasks.map(dtask => 
+          dtask.taskId === taskId ? { ...dtask, status: 'claim' } : dtask
+        ));
+  
+        console.log('Task ready to claim:', taskId);
+        setLoadingTask(null);
+      }, 17000); // 17 seconds delay
+  
+    } catch (error) {
+      console.error('Error starting task:', error);
+      setLoadingTask(null);
+    }
+  };
+  
+  
 
   if (loading) {
     return (
@@ -231,13 +356,35 @@ const Tasks = () => {
     );
   }
 
+  const filteredTasks = specialTask.filter(task => {
+    const taskStatus = task.status
+    if (taskFilter === 'completed') {
+      return taskStatus === 'complete';
+    } else {
+      return taskStatus !== 'complete';
+    }
+  });
+
+  const dfilteredTasks = dailyTask.filter(dtask => {
+    const taskStatus = dtask.status
+    if (taskFilter === 'completed') {
+      return taskStatus === 'complete';
+    } else {
+      return taskStatus !== 'complete';
+    }
+  });
+  
+  console.log('Filtered tasks based on dtaskFilter:', dfilteredTasks);
+
+  console.log('Filtered tasks based on taskFilter:', filteredTasks);
+
   return (
     <div className="relative min-h-screen bg-black bg-blur-sm bg-don bg-[center_top_5rem] bg-no-repeat text-white flex flex-col p-1 space-y-4">
-    <div className="absolute inset-0 bg-black bg-opacity-60"></div>
-    <div className="relative flex-grow overflow-y-auto text-center text-white p-4">
-       <h1 className="text-2xl font-bold">Curious about the moon's secrets? <br />Complete tasks to find out!</h1>
-        <p className="text-zinc-500 mt-2">But hey, only qualified actions unlock the <br /> LAR galaxy! ✨</p>
-        <div className="flex justify-center w-full mt-4">
+      <div className="absolute inset-0 bg-black bg-opacity-60"></div>
+      <div className="relative flex-grow overflow-y-auto text-center text-white p-4">
+        <h1 className="text-2xl font-bold">Curious about the moon's secrets? <br />Complete tasks to find out!</h1>
+                <p className="text-zinc-500 mt-2">But hey, only qualified actions unlock the <br /> LAR galaxy! ✨</p>
+        <div className="relative flex justify-center w-full mt-4">
           <button 
             className={`py-2 bg-opacity-70 text-center text-sm w-full rounded-2xl ${taskFilter === 'new' ? 'bg-white text-black' : 'bg-zinc-950 text-zinc-400'}`}
             onClick={() => setTaskFilter('new')}
@@ -251,59 +398,138 @@ const Tasks = () => {
             Completed
           </button>
         </div>
-        <div className="mt-6 space-y-4">
+
+  <div className="relative mt-6 space-y-4">
+          <h1 className='font-bold text-2xl flex'>Special Tasks</h1>
           {filteredTasks.length === 0 && taskFilter === 'completed' && (
             <div>No completed tasks yet.</div>
           )}
-          {filteredTasks.map((task) => (
-            <div key={task.id} className="bg-zinc-950 bg-opacity-70 p-4 rounded-xl flex justify-between items-center">
-              <div>
-                <p className="font-semibold">{task.title}</p>
-                <p className="text-golden-moon flex">            
-                  <img aria-hidden="true" alt="team-icon" src={logo} className="mr-2" width='25' height='5'/>
-                {task.reward.toLocaleString()} LAR</p>
-              </div>
-              <div className="flex items-center space-x-2">
-                {userData.TasksStatus[task.id] === 'start' && (
-                  <button 
-                    onClick={() => handleStartClick(task.id, task.link)} 
-                    className="bg-golden-moon text-white py-2 px-4 rounded-xl"
-                    disabled={loadingTask === task.id}
-                  >
-                    {loadingTask === task.id ? (
-                      <div className="spinner-border spinner-border-sm"></div>
-                    ) : (
-                      'Start'
-                    )}
-                  </button>
-                )}
-                {userData.TasksStatus[task.id] === 'claim' && (
-                  <button 
-                    onClick={() => handleClaimClick(task.id, task.reward)} 
-                    className="bg-golden-moon text-white py-2 px-4 rounded-xl"
-                  >
-                    Claim
-                  </button>
-                )}
-                {userData.TasksStatus[task.id] === 'completed' && (
-                  <button 
-                    className="bg-golden-moon text-white py-2 px-4 rounded-xl"
-                    disabled
-                  >
-                    Completed
-                  </button>
-                )}
-                {showGoButton && userData.TasksStatus[task.id] === 'completed' && (
-                  <a href={task.link} target="_blank" rel="noopener noreferrer" className="bg-primary text-primary-foreground py-2 px-4 text-golden-moon rounded-lg">
-                    Go
-                  </a>
-                )}
-              </div>
-            </div>
-          ))}
+        {filteredTasks.length > 0 ? (
+  filteredTasks.map((task) => {
+    const taskStatus = task.status;
+    console.log('Rendering task:', task);
+
+    // Determine the logo based on task status
+    const taskLogo = taskStatus === 'complete' ? logo : taskLogos[task.taskId] || ''; 
+
+    return (
+      <div key={task.id} className="bg-sinc bg-opacity-10 p-4 rounded-xl flex justify-between items-center">
+        <div className="flex items-center space-x-3">
+          <div className='bg-hy rounded-3xl'>
+            <img aria-hidden="true" alt="task-icon" src={taskLogo} className="m-2 w-6 h-6" />
+          </div>
+          <div className='flex text-left flex-col'>
+            <p className="font-bold text-white">{task.title}</p>
+            <p className="text-golden-moon font-semibold">{task.reward} LAR</p>
+          </div>
+        </div>
+        <div className="flex items-center space-x-2">
+          {taskStatus === 'start' && (
+            <button 
+            onClick={() => handleStartClick(task.userId, task.taskId, task.linkz)}
+            className="bg-golden-moon text-white py-2 px-4 rounded-xl"
+              disabled={loadingTask === task.taskId}
+            >
+              {loadingTask === task.taskId ? (
+                <div className="spinner-border spinner-border-sm"></div>
+              ) : (
+                'Start'
+              )}
+            </button>
+          )}
+          {taskStatus === 'claim' && (
+            <button 
+            onClick={() => handleClaimClick(task.userId, task.taskId, parseInt(task.reward))}
+            className="bg-golden-moon text-white py-2 px-4 rounded-xl"
+            >
+              Claim
+            </button>
+          )}
+          {taskStatus === 'completed' && (
+            <button 
+              className="bg-golden-moon text-white py-2 px-4 rounded-xl"
+              disabled
+            >
+              Completed
+            </button>
+          )}
         </div>
       </div>
+    )
+  })
+) : (
+  <div>No special tasks available.</div>
+)}
 
+        </div>
+
+        <div className="relative mt-6 space-y-4">
+          <h1 className='font-bold text-2xl flex'>Daily Tasks</h1>
+          {dfilteredTasks.length === 0 && taskFilter === 'completed' && (
+            <div>No completed tasks yet.</div>
+          )}
+         {dfilteredTasks.length > 0 ? (
+         dfilteredTasks.map((dtask) => {
+        const dtaskStatus = dtask.status;
+       console.log('Rendering dtask:', dtask);
+
+    // Determine the logo based on dtask status
+    const dtaskLogo = dtaskStatus === 'complete' ? logo : dtaskLogos[dtask.taskId] || ''; 
+
+    return (
+      <div key={dtask.id} className="bg-sinc bg-opacity-10 pt-4 pb-4 pl-1 pr-4  rounded-xl flex justify-between items-center">
+        <div className="flex items-center space-x-3">
+          <div className='bg-hy  flex items-center rounded-3xl'>
+            <img aria-hidden="true" alt="task-icon" src={dtaskLogo} className="m-2 mr-5 items-center w-7 h-7" />
+          </div>
+          <div className='flex text-left flex-col'>
+            <p className="font-bold w-4/5 text-white">{dtask.title}</p>
+            <p className="text-golden-moon font-semibold">{dtask.reward} LAR</p>
+          </div>
+        </div>
+        <div className="flex items-center space-x-2">
+          {dtaskStatus === 'start' && (
+            <button 
+            onClick={() => handleDailyStart(dtask.userId, dtask.taskId, dtask.linkz)}
+            className="bg-golden-moon text-white py-2 px-4 rounded-xl"
+              disabled={loadingTask === dtask.taskId}
+            >
+              {loadingTask === dtask.taskId ? (
+                <div className="spinner-border spinner-border-sm"></div>
+              ) : (
+                'Start'
+              )}
+            </button>
+          )}
+          {dtaskStatus === 'claim' && (
+            <button 
+            onClick={() => handleDailyClaim(dtask.userId, dtask.taskId, parseInt(dtask.reward))}
+            className="bg-golden-moon text-white py-2 px-4 rounded-xl"
+            >
+              Claim
+            </button>
+          )}
+          {dtaskStatus === 'completed' && (
+            <button 
+              className="bg-golden-moon text-white py-2 px-4 rounded-xl"
+              disabled
+            >
+              Completed
+            </button>
+          )}
+        </div>
+      </div>
+    )
+  })
+) : (
+  <div>No daily tasks available.</div>
+)}
+
+        </div>
+  
+        
+      </div>
+  
       <AnimatePresence>
         {showRCTasks && selectedTask && (
           <motion.div
@@ -318,12 +544,12 @@ const Tasks = () => {
           </motion.div>
         )}
       </AnimatePresence>
-
+  
       <div className="w-full max-w-md sticky bottom-0 left-0 flex text-white bg-zinc-900 justify-around py-1">
         <Footer />
       </div>
     </div>
   );
+  
 };
-
 export default Tasks;
