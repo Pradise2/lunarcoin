@@ -15,7 +15,7 @@ import telegram  from './telegram.png';
 
 const Tasks = () => {
   const [userData, setUserData] = useState({ TasksStatus: {}, TasksComplete: {} });
-  const [userId, setUserId] = useState('001'); // Replace with dynamic ID if possible
+  const [userId, setUserId] = useState(null); // Replace with dynamic ID if possible
   const [taskFilter, setTaskFilter] = useState('new');
   const [loadingTask, setLoadingTask] = useState(null);
   const [specialTask, setSpecialTask] = useState([]);
@@ -448,7 +448,7 @@ const test ={
             <img aria-hidden="true" alt="task-icon" src={dtaskLogo} className="m-2 mr-5 items-center w-7 h-7" />
           </div>
           <div className='flex text-left flex-col'>
-            <p className="font-bold w-4/5 text-white">Follow Twittter</p>
+            <p className="font-bold w-4/5 text-white">{dtask.title}</p>
             <p className="text-golden-moon font-semibold">{dtask.reward} LAR</p>
           </div>
         </div>
