@@ -25,7 +25,6 @@ const Squad = () => {
       if (user) {
         setUserId(user.id);
         setUserName(user.username);
-        console.log('User data available:', user);
       } else {
         console.error('User data is not available.');
       }
@@ -47,8 +46,6 @@ const Squad = () => {
         setSquads(squads || []);
         setFarmData(farmData);
         setFarmBalance(farmData.FarmBalance || 0);
-        console.log('Fetched squad data:', { userSquad, squads });
-        console.log('Fetched farm data:', farmData);
       } catch (error) {
         console.error('Error fetching data:', error);
         setError('Error fetching data');
@@ -58,19 +55,16 @@ const Squad = () => {
     };
 
     if (userId) {
-      console.log('Fetching data for userId:', userId);
       fetchData();
     }
   }, [userId]);
 
   const copyToClipboard = () => {
     const reflink = `https://t.me/ThelunarCoin_bot?start=ref_${userId}`;
-    console.log('Referral link:', reflink);
-
+  
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(reflink).then(() => {
         setCopied(true);
-        console.log('Copied to clipboard!');
         setTimeout(() => setCopied(false), 1000);
       }).catch(err => {
         console.error('Failed to copy text:', err);
@@ -83,7 +77,6 @@ const Squad = () => {
       try {
         document.execCommand('copy');
         setCopied(true);
-        console.log('Copied to clipboard using fallback method!');
         setTimeout(() => setCopied(false), 2000);
       } catch (err) {
         console.error('Failed to copy:', err);
@@ -103,12 +96,7 @@ const Squad = () => {
     const newTotalSquad = Number(userSquad?.totalBalance || 0) + Number(difference);
     const totalBalance = Number(farmBalance || 0) + Number(newTotalSquad);
 
-    console.log('Earning:', earning);
-    console.log('Difference:', difference);
-    console.log('New Claimed Referral:', newClaimedReferral);
-    console.log('New Total Squad:', newTotalSquad);
-    console.log('Total Balance:', totalBalance);
-
+    
     try {
       const response = await axios.put(`https://lunarapp.thelunarcoin.com/backend/api/squad/update`, {
         userId: userId,
@@ -117,15 +105,11 @@ const Squad = () => {
         totalsquad: newTotalSquad,
       });
 
-      console.log('Claim response:', response.data);
-
       const updatedSquadResponse = await axios.get(`https://lunarapp.thelunarcoin.com/backend/api/squad/${userId}`);
       const updatedSquad = updatedSquadResponse.data.userSquad;
       const updatedFarmData = await getUserFromFarm(userId);
 
-      console.log('Updated squad data:', updatedSquad);
-      console.log('Updated farm data:', updatedFarmData);
-
+    
       setUserSquad(updatedSquad);
       setFarmBalance(updatedFarmData.FarmBalance || 0);
     } catch (error) {
@@ -142,8 +126,7 @@ const Squad = () => {
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,
   });
-  console.log('Display Total Balance:', displayTotalBalance);
-
+ 
   const earning = Number(userSquad?.referralCount || 0) * 5000;
   const difference = Number(earning) - Number(userSquad?.claimedReferral || 0);
 
@@ -151,11 +134,9 @@ const Squad = () => {
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,
   });
-  console.log('Formatted Difference:', formattedDifference);
-
+ 
   const isClaimable = difference > 0;
-  console.log('Is claimable:', isClaimable);
-
+ 
   if (loading) {
     return (
       <div
