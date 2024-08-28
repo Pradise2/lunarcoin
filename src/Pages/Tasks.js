@@ -160,17 +160,16 @@ const Tasks = () => {
   const handleClaimClick = async (userId, taskId, reward) => {
     const task = specialTask.find(t => t.taskId === taskId);
   
-   
     if (navigator.vibrate) {
       navigator.vibrate(500);
-   }
+    }
   
     try {
       await axios.put('https://lunarapp.thelunarcoin.com/backend/api/specialtask/updateStatus', {
         userId,
         taskId,
       });
-   
+  
       // Update the specific task's status to "completed"
       setSpecialTask(prevTasks => prevTasks.map(task => 
         task.taskId === taskId ? { ...task, status: 'complete' } : task
@@ -187,44 +186,56 @@ const Tasks = () => {
           [taskId]: 'completed',
         }
       }));
-   
+  
       const updatedFarmData = await getUserFromFarm(userId);
       const newFarmBalance = updatedFarmData.FarmBalance + reward;
-     
+  
       await updateFarmBalance(userId, newFarmBalance);
-     
+  
       setFarmData(prevData => ({
         ...prevData,
         FarmBalance: newFarmBalance,
       }));
-     
+      
       setSelectedTask(task);
       setShowRCTasks(true);
       setShowGoButton(true);
-     
+      
       setTimeout(() => setShowRCTasks(false), 1000);
     } catch (error) {
       console.error('Error updating task status:', error);
     }
+  
+    try {
+      // Ensure reward is not null or undefined before making the API call
+      await axios.put('https://lunarapp.thelunarcoin.com/backend/api/specialtask/userbackup', {
+        userId,
+        specialBalance: reward, // Assuming you meant to pass the reward as the specialBalance
+      });
+  
+      console.log('specialBalance:', reward);
+    } catch (error) {
+      console.error('Error performing user backup:', error);
+    }
   };
 
   const handleDailyClaim = async (userId, taskId, reward) => {
-    const dtask = dailyTask.find(t => t.taskId === taskId);
+    const task = dailyTask.find(t => t.taskId === taskId);
   
-   
     if (navigator.vibrate) {
       navigator.vibrate(500);
-     
     }
   
     try {
+      // Update the task status
       await axios.put('https://lunarapp.thelunarcoin.com/backend/api/dailytask/updateStatus', {
         userId,
         taskId,
       });
-     // Update the specific task's status to "completed"
-      setDailyTask(prevTasks => prevTasks.map(dtask => 
-        dtask.taskId === taskId ? { ...dtask, status: 'complete' } : dtask
+ 
+      // Update the specific task's status to "completed"
+      setDailyTask(prevTasks => prevTasks.map(t => 
+        t.taskId === taskId ? { ...t, status: 'complete' } : t
       ));
   
       setUserData(prevData => ({
@@ -238,18 +249,17 @@ const Tasks = () => {
           [taskId]: 'completed',
         }
       }));
-     
+  
       const updatedFarmData = await getUserFromFarm(userId);
       const newFarmBalance = updatedFarmData.FarmBalance + reward;
-      
       await updateFarmBalance(userId, newFarmBalance);
-     
+    
       setFarmData(prevData => ({
         ...prevData,
         FarmBalance: newFarmBalance,
       }));
-     
-      setSelectedTask(dtask);
+      
+      setSelectedTask(task);
       setShowRCTasks(true);
       setShowGoButton(true);
      
@@ -257,7 +267,19 @@ const Tasks = () => {
     } catch (error) {
       console.error('Error updating task status:', error);
     }
-  };
+
+    try {
+      await axios.put('https://lunarapp.thelunarcoin.com/backend/api/dailytask/userbackup', {
+        userId,
+        dailyBalance: reward, 
+      });
+  
+      console.log('dailyBalance:', reward);
+    } catch (error) {
+      console.error('Error performing user backup:', error);
+    }
+};
+
 
   
   const handleStartClick = async (userId, taskId, link) => {
