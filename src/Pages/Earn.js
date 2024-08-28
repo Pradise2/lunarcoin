@@ -49,15 +49,11 @@ const Earn = () => {
               </p>
             </div>
           </div>
-          <button
-    className="bg-black text-white py-2 px-5 rounded-xl "
-    onClick={() => {
-        // Your logic here
-        console.log("Claim button clicked!");
-    }}
->
-    Claim
-</button>
+          <button 
+            className="bg-darkGray text-white py-2 px-5 rounded-xl cursor-not-allowed"
+          >
+            ...
+          </button>
 
         </div>
 
@@ -73,10 +69,9 @@ const Earn = () => {
             </div>
           </div>
           <button 
-            onClick={handleClaimClick} 
-            className="bg-black text-white py-2 px-5 rounded-xl"
+            className="bg-darkGray text-white py-2 px-5 rounded-xl cursor-not-allowed"
           >
-            Claim
+            ...
           </button>
         </div>
 
