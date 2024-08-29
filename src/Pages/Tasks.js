@@ -74,6 +74,12 @@ const Tasks = () => {
     '26': telegram,
     '27': telegram,
     '28': telegram,
+    '29': twitter,
+    '30': twitter,
+    '31': telegram,
+    '32': telegram,
+    '33': telegram,
+    '34': telegram,
   };
 
 
