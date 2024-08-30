@@ -21,6 +21,9 @@ module.exports = {
         'golden': '#2B2B2B',
         'lay': "url('./Pages/lay.jpg')",
         'don': "url('./Pages/don.png')", 
+        'eo': "url('./Pages/ho.png')",
+        'eom': "url('./Pages/hom.png')",
+        
         'sinc': '#E6E6E6',
         'CharcoalGray': '#424242',
       },
