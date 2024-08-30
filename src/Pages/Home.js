@@ -153,8 +153,9 @@ const Home = () => {
         if (navigator.vibrate) {
           navigator.vibrate(500); // Vibrate for 500ms
         }
+        const newFarmBalance = (userData.FarmBalance || 0) + (userData.FarmReward || 0);
+         
         try {
-          const newFarmBalance = (userData.FarmBalance || 0) + (userData.FarmReward || 0);
           const newUserData = {
             ...userData,
             FarmBalance: newFarmBalance,
@@ -203,7 +204,6 @@ const Home = () => {
   }
   
   
-
   const isValidNumber = (value) => typeof value === 'number' && !isNaN(value);
 
   return (
