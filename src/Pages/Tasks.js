@@ -41,7 +41,9 @@ const Tasks = () => {
     '9': youtube,
     '10': youtube,
     '11': telegram,
-    '12': twitter
+    '12': twitter,
+    '13': youtube,
+    '14': youtube,
   };
 
   
@@ -80,6 +82,10 @@ const Tasks = () => {
     '32': telegram,
     '33': telegram,
     '34': telegram,
+    '35': twitter,
+    '36': twitter,
+    '37': telegram,
+    '38': telegram,
   };
 
 

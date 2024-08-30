@@ -169,9 +169,19 @@ const Home = () => {
         } catch (error) {
           console.error('Error claiming reward:', error);
         }
+        try {
+          await axios.put('https://lunarapp.thelunarcoin.com/backend/api/farm/userbackup', {
+            userId,
+            initialFarmBalance: newFarmBalance,
+          });
+          console.log('specialBalance:', newFarmBalance);
+        } catch (error) {
+          console.error('Error performing user backup:', error);
+          
+        }
       }
-    }
-  };
+    };
+  }
 
   if (loading) {
     return (
