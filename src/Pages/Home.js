@@ -208,26 +208,21 @@ const Home = () => {
   const isValidNumber = (value) => typeof value === 'number' && !isNaN(value);
 
   return (
-    <div
-      className="relative min-h-screen bg-black bg-screen bg-no-repeat bg-contain bg-center flex items-center justify-center"
-    >
-      <div 
-        className="absolute transform -translate-y-1/2 top-1/2 flex flex-col justify-center items-center text-center"
-        style={{ top: '50%' }}
-      >
-        <ClipLoader 
-          color="#FFD700" 
-          size={100} 
-          speedMultiplier={1} 
-        />
-        
+    <div className="relative min-h-screen bg-black bg-screen bg-no-repeat bg-contain bg-center flex flex-col items-center justify-center">
+      <p className="text-white text-center mb-4">
+        We are undergoing server maintenance
+      </p>
+      <p className="text-white text-center mb-4">
+        All data is saved and secure.
+      </p>
+      <div className="flex flex-col items-center">
+        <ClipLoader color="#FFD700" size={100} speedMultiplier={1} />
       </div>
       <div className="w-full max-w-md rounded-3xl bg-darkGray fixed bottom-0 left-0 flex justify-around py-1">
         <Footer />
       </div>
     </div>
   );
-  
   
 };
 
