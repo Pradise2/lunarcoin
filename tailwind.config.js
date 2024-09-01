@@ -23,7 +23,7 @@ module.exports = {
         'don': "url('./Pages/don.png')", 
         'eo': "url('./Pages/ho.png')",
         'eom': "url('./Pages/hom.png')",
-        
+        'screen': "url('./Pages/screen.png')",
         'sinc': '#E6E6E6',
         'CharcoalGray': '#424242',
       },
