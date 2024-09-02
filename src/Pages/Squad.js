@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { getUserFromFarm } from '../utils/firestoreFunctions';
 import Footer from '../Component/Footer';
 import { ClipLoader } from 'react-spinners';
 import './bg.css';
+import { motion, AnimatePresence } from 'framer-motion';
 import axios from 'axios';
+import user from './user.png';
+import './bgvh.css';
+
 
 const Squad = () => {
   const [copied, setCopied] = useState(false);
@@ -11,16 +14,19 @@ const Squad = () => {
   const [username, setUserName] = useState(null);
   const [userSquad, setUserSquad] = useState(null);
   const [squads, setSquads] = useState([]);
-  const [farmData, setFarmData] = useState(null);
-  const [farmBalance, setFarmBalance] = useState(0);
+  const [all, setAll] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showRCSquad, setShowRCSquad] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState(null); // Define error state
 
   useEffect(() => {
+    // Check if Telegram WebApp is available
     if (window.Telegram && window.Telegram.WebApp) {
       const { WebApp } = window.Telegram;
+
+      // Expand the WebApp
       WebApp.expand();
+
       const user = WebApp.initDataUnsafe?.user;
       if (user) {
         setUserId(user.id);
@@ -30,38 +36,65 @@ const Squad = () => {
       }
     } else {
       console.error('Telegram WebApp script is not loaded.');
-    } 
+    }
   }, []);
 
-  useEffect(() => {
-    const fetchData = async () => {
+  useEffect(() => { 
+    const fetchSquadData = async () => {
       try {
-        const [squadResponse, farmData] = await Promise.all([
-          axios.get(`https://lunarapp.thelunarcoin.com/backend/api/squad/${userId}`),
-          getUserFromFarm(userId),
-        ]);
-
-        const { userSquad, squads } = squadResponse.data;
+        const response = await axios.get(`https://lunarapp.thelunarcoin.com/backend/api/squad/${userId}`);
+        const { userSquad, squads } = response.data;
         setUserSquad(userSquad);
-        setSquads(squads || []);
-        setFarmData(farmData);
-        setFarmBalance(farmData.FarmBalance || 0);
+        setSquads(squads || []); 
+        console.log('Fetched squad data:', { userSquad, squads }); 
       } catch (error) {
-        console.error('Error fetching data:', error);
-        setError('Error fetching data');
+        console.error('Error fetching squad data:', error);
+        setError('Error fetching squad data');
       } finally {
         setLoading(false);
       }
     };
 
     if (userId) {
-      fetchData();
+      fetchSquadData();
     }
   }, [userId]);
 
+ useEffect(() => { 
+    const fetchAllData = async () => {
+      try {
+        const response = await axios.get(`https://lunarapp.thelunarcoin.com/backend/api/getuserbackup/${userId}`);
+        const all = response.data;
+        
+        // Calculate Balance
+        const dailyBalance = parseFloat(all.dailyBalance);
+        const specialBalance = parseFloat(all.specialBalance);
+        const initialFarmBalance = parseFloat(all.initialFarmBalance);
+        const farmClaimCount = parseInt(all.farmClaimCount);
+  
+        const balance = dailyBalance + specialBalance + initialFarmBalance + (farmClaimCount * 14400);
+        setAll({ ...all, balance });
+  
+        console.log('Fetched all data:', { ...all, balance });
+      } catch (error) {
+        console.error('Error fetching all data:', error.message);
+        setError(`Failed to fetch data: ${error.message}`);
+      } finally {
+        setLoading(false);
+      }
+    };
+  
+    if (userId) {
+      setLoading(true);
+      fetchAllData();
+    }
+  }, [userId]);
+  
+
+
   const copyToClipboard = () => {
     const reflink = `https://t.me/ThelunarCoin_bot?start=ref_${userId}`;
-  
+
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(reflink).then(() => {
         setCopied(true);
@@ -85,18 +118,25 @@ const Squad = () => {
     }
   };
 
+ 
+
   const handleClaim = async (userId) => {
     if (navigator.vibrate) {
       navigator.vibrate(500); // Vibrate for 500ms
     }
-
+  
     const earning = Number(userSquad?.referralCount || 0) * 5000;
     const difference = Number(earning) - Number(userSquad?.claimedReferral || 0);
     const newClaimedReferral = Number(userSquad?.claimedReferral || 0) + Number(difference);
     const newTotalSquad = Number(userSquad?.totalBalance || 0) + Number(difference);
-    const totalBalance = Number(farmBalance || 0) + Number(newTotalSquad);
-
-    
+    const totalBalance = Number(all?.balance || 0) + Number(newTotalSquad);
+  
+    console.log('Earning:', earning);
+    console.log('Difference:', difference);
+    console.log('New Claimed Referral:', newClaimedReferral);
+    console.log('New Total Squad:', newTotalSquad);
+    console.log('Total Balance:', totalBalance);
+  
     try {
       const response = await axios.put(`https://lunarapp.thelunarcoin.com/backend/api/squad/update`, {
         userId: userId,
@@ -104,39 +144,27 @@ const Squad = () => {
         totalbalance: totalBalance.toFixed(2),
         totalsquad: newTotalSquad,
       });
-
+  
+      console.log('Claim response:', response.data);
+  
+      // Re-fetch updated squad and farm data
       const updatedSquadResponse = await axios.get(`https://lunarapp.thelunarcoin.com/backend/api/squad/${userId}`);
       const updatedSquad = updatedSquadResponse.data.userSquad;
-      const updatedFarmData = await getUserFromFarm(userId);
+     console.log('Claim update response:', updatedSquadResponse.data);
+  
+   
 
-    
       setUserSquad(updatedSquad);
-      setFarmBalance(updatedFarmData.FarmBalance || 0);
-    } catch (error) {
+   } catch (error) {
       console.error('Error during claim:', error);
       setError('Error during claim');
     }
-
+  
     setShowRCSquad(true);
     setTimeout(() => setShowRCSquad(false), 2000);
   };
+  
 
-  const totalBalance = Number(farmBalance || 0) + Number(userSquad?.claimedReferral || 0);
-  const displayTotalBalance = totalBalance.toLocaleString('en-US', {
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  });
- 
-  const earning = Number(userSquad?.referralCount || 0) * 5000;
-  const difference = Number(earning) - Number(userSquad?.claimedReferral || 0);
-
-  const formattedDifference = difference.toLocaleString('en-US', {
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  });
- 
-  const isClaimable = difference > 0;
- 
   if (loading) {
     return (
       <div
@@ -157,7 +185,35 @@ const Squad = () => {
     );
   }
 
+  const totalBalance = Number(all?.balance || 0) + Number(userSquad?.totalSquad || 0);
+  const displayTotalBalance = totalBalance.toLocaleString('en-US', {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  });
 
+
+  console.log('TotalBal', totalBalance);
+  console.log('Total', all?.balance);
+  
+  // Format the difference with commas and two decimal places
+ 
+
+  const earning = Number(userSquad?.referralCount || 0) * 5000;
+  const difference = Number(earning) - Number(userSquad?.claimedReferral || 0);
+  const newTotalSquad = Number(userSquad?.totalBalance || 0) + Number(difference);
+    
+  const formattedDifference = difference.toLocaleString('en-US', {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  });
+
+  const isClaimable = difference > 0;
+
+  console.log('Earning:', earning);
+    console.log('Difference:', difference);
+    console.log('Total Balance:', totalBalance);
+    console.log('new Balance:', newTotalSquad);
+  
   return (
     <div
     className="relative min-h-screen bg-black bg-blur-sm bg-don bg-[center_top_5rem] bg-no-repeat text-white flex flex-col items-center p-4 space-y-4 ">
