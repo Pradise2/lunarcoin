@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import axios from 'axios';
 import user from './user.png';
 import './bgvh.css';
-import moon from './moon.png'
+
 
 const Squad = () => {
   const [copied, setCopied] = useState(false);
