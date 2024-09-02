@@ -209,8 +209,6 @@ const Home = () => {
 
   return (
     <div className="relative min-h-screen bg-black bg-screen bg-no-repeat bg-contain bg-center flex flex-col items-center justify-center">
-      
-     
       <div className="flex flex-col items-center">
         <ClipLoader color="#FFD700" size={100} speedMultiplier={1} />
       </div>

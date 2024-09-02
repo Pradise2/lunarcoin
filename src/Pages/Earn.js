@@ -11,7 +11,7 @@ const Earn = () => {
 
   const handleClaimClick = () => {
     console.log("Claim button clicked");
-    // Add claim logic here, e.g., API call
+   
   };
 
   if (loading) {

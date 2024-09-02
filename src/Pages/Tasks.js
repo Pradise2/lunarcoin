@@ -101,8 +101,6 @@ const Tasks = () => {
     '45': twitter,
     '46': twitter,
     '47': twitter,
-
-
   };
 
 
