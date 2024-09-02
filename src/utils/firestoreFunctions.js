@@ -1,7 +1,7 @@
 // src/firestoreFunctions.js
 import { db } from './firebaseConfig';
 import { doc, setDoc, getDoc, updateDoc, collection, getDocs } from "firebase/firestore"; 
-
+import axios from 'axios';
 // Utility function to update user count for a specific collection
 const updateUserCount = async (collectionName) => {
   const collectionRef = collection(db, collectionName);
@@ -48,14 +48,14 @@ export const getUserTasks = async (userId) => {
   }
 };
 
-// Farm Collection Functions
-export const addUserToFarm = async (userId, farmData) => {
-  await setDoc(doc(db, "Farm", userId.toString()), farmData);
-  await updateUserCount("Farm");
+// Special Collection Functions
+export const addUserStasks = async (userId, stasks) => {
+  await setDoc(doc(db, "Stasks", userId.toString()), stasks);
+  await updateUserCount("Stasks");
 };
 
-export const getUserFromFarm = async (userId) => {
-  const docRef = doc(db, "Farm", userId.toString());
+export const getUserStasks = async (userId) => {
+  const docRef = doc(db, "Stasks", userId.toString());
   const docSnap = await getDoc(docRef);
 
   if (docSnap.exists()) {
@@ -66,12 +66,31 @@ export const getUserFromFarm = async (userId) => {
   }
 };
 
-export const updateFarmBalance = async (userId, newBalance) => {
-  const userRef = doc(db, "Farm", userId.toString());
-  await updateDoc(userRef, {
-    FarmBalance: newBalance,
-  });
+
+
+// Farm Collection Functions
+export const addUserToFarm = async (userId, farmData) => {
+  try {
+    const response = await axios.post('https://lunarapp.thelunarcoin.com/backend/api/farm/add', { userId, farmData });
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Error adding user to farm:", error);
+    return null;
+  }
 };
+
+export const getUserFromFarm = async (userId) => {
+  try {
+    const response = await axios.get(`https://lunarapp.thelunarcoin.com/backend/api/farm/${userId}`);
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Error getting user from farm:", error);
+    return null;
+  }
+};
+
 
 // Squad Collection Functions
 export const addUserToSquad = async (userId, squadData) => {

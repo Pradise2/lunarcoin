@@ -2,12 +2,14 @@ import React, { useState, useEffect, useCallback } from 'react';
 import Footer from '../Component/Footer';
 import './Spinner.css';
 import { ClipLoader } from 'react-spinners';
-import { updateFarmBalance, getUserFromFarm } from '../utils/firestoreFunctions';
 import './bg.css';
 import RCTasks from '../Component/RCTasks';
 import { motion, AnimatePresence } from 'framer-motion';
 import logo from './logo.png';
 import facebook from './facebook.png'
+import blum from './blum.jpg'
+import cat from './cat.jpg'
+import hamster from './hams.jpg'
 import youtube from './youtube.png'
 import twitter from './twitter.png'
 import axios from 'axios';
@@ -15,18 +17,18 @@ import telegram  from './telegram.png';
 
 const Tasks = () => {
   const [userData, setUserData] = useState({ TasksStatus: {}, TasksComplete: {} });
-  const [userId, setUserId] = useState(null); // Replace with dynamic ID if possible
+  const [userId, setUserId] = useState('001'); // Replace with dynamic ID if possible
   const [taskFilter, setTaskFilter] = useState('new');
   const [loadingTask, setLoadingTask] = useState(null);
   const [specialTask, setSpecialTask] = useState([]);
-  const [farmData, setFarmData] = useState(null);
-  const [taskReadyToClaim, setTaskReadyToClaim] = useState(null);
+   const [taskReadyToClaim, setTaskReadyToClaim] = useState(null);
   const [showRCTasks, setShowRCTasks] = useState(false);
   const [selectedTask, setSelectedTask] = useState(null);
   const [showGoButton, setShowGoButton] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [dailyTask, setDailyTask] = useState([]);
+
 
 
   const taskLogos = {
@@ -44,7 +46,10 @@ const Tasks = () => {
     '12': twitter,
     '14': youtube,
     '15': youtube,
-    '16': youtube
+    '16': youtube,
+    '17': blum,
+    '18': cat,
+    '19': hamster
   };
 
   
@@ -90,7 +95,17 @@ const Tasks = () => {
     '39': telegram,
     '40': twitter,
     '41': twitter,
+    '42': telegram,
+    '43': telegram,
+    '44': telegram,
+    '45': twitter,
+    '46': twitter,
+    '47': twitter,
+
+
   };
+
+
 
 
   const initializeUserId = useCallback(() => {
@@ -100,7 +115,7 @@ const Tasks = () => {
       const user = WebApp.initDataUnsafe?.user;
       if (user) {
         setUserId(user.id);
-      } else {
+     } else {
         console.error('User data is not available.');
       }
     } else {
@@ -117,7 +132,7 @@ const Tasks = () => {
       try {
         const response = await axios.get(`https://lunarapp.thelunarcoin.com/backend/api/specialtask/${userId}`);
         const special = response.data;
-        setSpecialTask(special); 
+        setSpecialTask(special);
       } catch (error) {
         console.error('Error fetching special task data:', error);
         setError('Error fetching special task data');
@@ -128,7 +143,7 @@ const Tasks = () => {
 
     if (userId) {
       fetchSpecialTaskData();
-    }
+   }
   }, [userId]);
 
   useEffect(() => { 
@@ -147,27 +162,15 @@ const Tasks = () => {
 
     if (userId) {
       fetchDailyTaskData();
-    }
+   }
   }, [userId]);
 
-  useEffect(() => {
-    const fetchFarmData = async () => {
-      try {
-        const data = await getUserFromFarm(userId);
-        setFarmData(data);
-      } catch (error) {
-        console.error('Error fetching farm data:', error);
-      }
-    };
-    if (userId) {
-      fetchFarmData();
-    }
-  }, [userId]);
+  
 
   const saveUserData = useCallback(async () => {
     if (userId && userData) {
-      try {
-       } catch (error) {
+      try {  
+      } catch (error) {
         console.error('Error saving data:', error);
       }
     }
@@ -214,16 +217,7 @@ const Tasks = () => {
         }
       }));
   
-      const updatedFarmData = await getUserFromFarm(userId);
-      const newFarmBalance = updatedFarmData.FarmBalance + reward;
-  
-      await updateFarmBalance(userId, newFarmBalance);
-  
-      setFarmData(prevData => ({
-        ...prevData,
-        FarmBalance: newFarmBalance,
-      }));
-      
+     
       setSelectedTask(task);
       setShowRCTasks(true);
       setShowGoButton(true);
@@ -259,6 +253,8 @@ const Tasks = () => {
         userId,
         taskId,
       });
+      console.log('Start di claim clicked for taskId:', taskId);
+
  
       // Update the specific task's status to "completed"
       setDailyTask(prevTasks => prevTasks.map(t => 
@@ -277,14 +273,7 @@ const Tasks = () => {
         }
       }));
   
-      const updatedFarmData = await getUserFromFarm(userId);
-      const newFarmBalance = updatedFarmData.FarmBalance + reward;
-      await updateFarmBalance(userId, newFarmBalance);
-    
-      setFarmData(prevData => ({
-        ...prevData,
-        FarmBalance: newFarmBalance,
-      }));
+     
       
       setSelectedTask(task);
       setShowRCTasks(true);
@@ -307,10 +296,9 @@ const Tasks = () => {
     }
 };
 
-
-  
   const handleStartClick = async (userId, taskId, link) => {
     setLoadingTask(taskId);
+    console.log('Start button clicked for taskId:', taskId);
     
     window.open(link, '_blank');
     
@@ -329,16 +317,15 @@ const Tasks = () => {
           task.taskId === taskId ? { ...task, status: 'claim' } : task
         ));
         
-      }, 17000);
+   }, 17000);
     } catch (error) {
       console.error('Error starting task:', error);
       setLoadingTask(null);
     }
   };
-  
+
   const handleDailyStart = async (userId, taskId, link) => {
     setLoadingTask(taskId);
-   
     // Open the link immediately
     window.open(link, '_blank');
   
@@ -355,16 +342,16 @@ const Tasks = () => {
           dtask.taskId === taskId ? { ...dtask, status: 'claim' } : dtask
         ));
   
-        setLoadingTask(null);
+     setLoadingTask(null);
       }, 17000); // 17 seconds delay
   
     } catch (error) {
       console.error('Error starting task:', error);
       setLoadingTask(null);
     }
+    console.log('Start dilybutton clicked for taskId:', taskId);
+
   };
-  
-  
 
   if (loading) {
     return (
@@ -403,8 +390,7 @@ const Tasks = () => {
       return taskStatus !== 'complete';
     }
   });
-  
- 
+
   return (
     <div className="relative min-h-screen bg-black bg-blur-sm bg-don bg-[center_top_5rem] bg-no-repeat text-white flex flex-col p-1 space-y-4">
       <div className="absolute inset-0 bg-black bg-opacity-60"></div>
@@ -577,4 +563,4 @@ const Tasks = () => {
   );
   
 };
-export default Tasks;
+export default Tasks; 

@@ -13,7 +13,7 @@ import axios from 'axios';
 
 const Home = () => {
   const [userData, setUserData] = useState(null);
-  const [userId, setUserId] = useState(null);
+  const [userId, setUserId] = useState('001');
   const [userName, setUserName] = useState(null);
   const [buttonText, setButtonText] = useState("Start");
   const [showRCFarm, setShowRCFarm] = useState(false);
@@ -209,12 +209,8 @@ const Home = () => {
 
   return (
     <div className="relative min-h-screen bg-black bg-screen bg-no-repeat bg-contain bg-center flex flex-col items-center justify-center">
-      <p className="text-white text-center mb-4">
-        We are undergoing server maintenance
-      </p>
-      <p className="text-white text-center mb-4">
-        All data is saved and secure.
-      </p>
+      
+     
       <div className="flex flex-col items-center">
         <ClipLoader color="#FFD700" size={100} speedMultiplier={1} />
       </div>
