@@ -21,6 +21,7 @@ const Home = () => {
   const [identity, setIdentity] = useState(null);
   const [all, setAll] = useState([]);
   const [error, setError] = useState(null);
+  const [delayLoading, setDelayLoading] = useState(true)
 
    const prefix = "local";
   const [dynamicVariables, setDynamicVariables] = useState({});
@@ -264,7 +265,12 @@ const Home = () => {
     }
   };
 
-  if (loading) {
+  if (delayLoading) {
+    setTimeout(() => {
+      
+      setDelayLoading(false); // Stop loading after 3 seconds
+    }, 3000);
+
     return (
       <div
         className="relative min-h-screen bg-black bg-blur-sm bg-don bg-center bg-no-repeat text-white flex items-center justify-center p-4 space-y-4"
@@ -281,8 +287,8 @@ const Home = () => {
           />
         </div>
       </div>
-    );
-  }
+    );
+  }
 
   const isValidNumber = (value) => typeof value === 'number' && !isNaN(value);
 
