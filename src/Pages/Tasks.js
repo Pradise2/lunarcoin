@@ -28,6 +28,8 @@ const Tasks = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [dailyTask, setDailyTask] = useState([]);
+  const [delayLoading, setDelayLoading] = useState(true)
+
 
 
 
@@ -351,7 +353,13 @@ const Tasks = () => {
 
   };
 
-  if (loading) {
+ 
+  if (delayLoading) {
+    setTimeout(() => {
+      
+      setDelayLoading(false); // Stop loading after 3 seconds
+    }, 2000);
+
     return (
       <div
         className="relative min-h-screen bg-black bg-blur-sm bg-don bg-center bg-no-repeat text-white flex items-center justify-center p-4 space-y-4"
@@ -368,8 +376,8 @@ const Tasks = () => {
           />
         </div>
       </div>
-    );
-  }
+    );
+  }
 
   const filteredTasks = specialTask.filter(task => {
     const taskStatus = task.status

@@ -18,6 +18,7 @@ const Squad = () => {
   const [loading, setLoading] = useState(true);
   const [showRCSquad, setShowRCSquad] = useState(false);
   const [error, setError] = useState(null); // Define error state
+  const [delayLoading, setDelayLoading] = useState(true)
 
   useEffect(() => {
     // Check if Telegram WebApp is available
@@ -165,7 +166,12 @@ const Squad = () => {
   };
   
 
-  if (loading) {
+  if (delayLoading) {
+    setTimeout(() => {
+      
+      setDelayLoading(false); // Stop loading after 3 seconds
+    }, 2000);
+
     return (
       <div
         className="relative min-h-screen bg-black bg-blur-sm bg-don bg-center bg-no-repeat text-white flex items-center justify-center p-4 space-y-4"
@@ -182,8 +188,8 @@ const Squad = () => {
           />
         </div>
       </div>
-    );
-  }
+    );
+  }
   const earning = Number(userSquad?.referralCount || 0) * 5000;
   const difference = Number(earning) - Number(userSquad?.claimedReferral || 0);
 
