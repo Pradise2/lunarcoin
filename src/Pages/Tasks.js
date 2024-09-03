@@ -234,8 +234,7 @@ const Tasks = () => {
         specialBalance: reward, // Assuming you meant to pass the reward as the specialBalance
       });
   
-      console.log('specialBalance:', reward);
-    } catch (error) {
+   } catch (error) {
       console.error('Error performing user backup:', error);
     }
   };
@@ -253,9 +252,7 @@ const Tasks = () => {
         userId,
         taskId,
       });
-      console.log('Start di claim clicked for taskId:', taskId);
-
- 
+   
       // Update the specific task's status to "completed"
       setDailyTask(prevTasks => prevTasks.map(t => 
         t.taskId === taskId ? { ...t, status: 'complete' } : t
@@ -290,7 +287,6 @@ const Tasks = () => {
         dailyBalance: reward, 
       });
   
-      console.log('dailyBalance:', reward);
     } catch (error) {
       console.error('Error performing user backup:', error);
     }
@@ -298,8 +294,7 @@ const Tasks = () => {
 
   const handleStartClick = async (userId, taskId, link) => {
     setLoadingTask(taskId);
-    console.log('Start button clicked for taskId:', taskId);
-    
+   
     window.open(link, '_blank');
     
     try {
@@ -349,8 +344,7 @@ const Tasks = () => {
       console.error('Error starting task:', error);
       setLoadingTask(null);
     }
-    console.log('Start dilybutton clicked for taskId:', taskId);
-
+ 
   };
 
  
@@ -358,7 +352,7 @@ const Tasks = () => {
     setTimeout(() => {
       
       setDelayLoading(false); // Stop loading after 3 seconds
-    }, 2000);
+    }, 1000);
 
     return (
       <div

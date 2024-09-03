@@ -62,7 +62,6 @@ const Home = () => {
         const balance = dailyBalance + specialBalance + initialFarmBalance + (farmClaimCount * 14400);
         setAll({ ...all, balance });
   
-        console.log('Fetched all data:', { ...all, balance });
       } catch (error) {
         console.error('Error fetching all data:', error.message);
         setError(`Failed to fetch data: ${error.message}`);
@@ -85,8 +84,7 @@ const Home = () => {
          setLoading(true);
         let data = null;
         const localData = localStorage.getItem(variableName);
-        console.log('this is local data '+ localData);
-
+    
         if (localData) {
           data = JSON.parse(localData);
         } else {
@@ -98,11 +96,7 @@ const Home = () => {
         if (data) {
           const elapsed = currentTime - data.LastFarmActiveTime;
           const newFarmTime = data.FarmTime - elapsed;
-          console.log('this is last active time '+ data.LastFarmActiveTime);
-          console.log('this is current time '+ currentTime);
-          console.log('this is farm time '+ data.FarmTime);
-          console.log('this is farm status '+ data.FarmStatus);
-
+   
           if ( data.FarmStatus !== 'farming') {
             if (newFarmTime <= 0 ){
               data = {
@@ -269,7 +263,7 @@ const Home = () => {
     setTimeout(() => {
       
       setDelayLoading(false); // Stop loading after 3 seconds
-    }, 2000);
+    }, 1000);
 
     return (
       <div

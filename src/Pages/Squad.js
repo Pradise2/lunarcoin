@@ -47,8 +47,7 @@ const Squad = () => {
         const { userSquad, squads } = response.data;
         setUserSquad(userSquad);
         setSquads(squads || []); 
-        console.log('Fetched squad data:', { userSquad, squads }); 
-      } catch (error) {
+     } catch (error) {
         console.error('Error fetching squad data:', error);
         setError('Error fetching squad data');
       } finally {
@@ -76,7 +75,6 @@ const Squad = () => {
         const balance = dailyBalance + specialBalance + initialFarmBalance + (farmClaimCount * 14400);
         setAll({ ...all, balance });
   
-        console.log('Fetched all data:', { ...all, balance });
       } catch (error) {
         console.error('Error fetching all data:', error.message);
         setError(`Failed to fetch data: ${error.message}`);
@@ -131,13 +129,7 @@ const Squad = () => {
     const newClaimedReferral = Number(userSquad?.claimedReferral || 0) + Number(difference);
     const newTotalSquad = Number(userSquad?.totalBalance || 0) + Number(difference);
     const totalBalance = Number(all?.balance || 0) + Number(newTotalSquad);
-  
-    console.log('Earning:', earning);
-    console.log('Difference:', difference);
-    console.log('New Claimed Referral:', newClaimedReferral);
-    console.log('New Total Squad:', newTotalSquad);
-    console.log('Total Balance:', totalBalance);
-  
+
     try {
       const response = await axios.put(`https://lunarapp.thelunarcoin.com/backend/api/squad/update`, {
         userId: userId,
@@ -145,15 +137,10 @@ const Squad = () => {
         totalbalance: totalBalance.toFixed(2),
         totalsquad: newTotalSquad,
       });
-  
-      console.log('Claim response:', response.data);
-  
+
       // Re-fetch updated squad and farm data
       const updatedSquadResponse = await axios.get(`https://lunarapp.thelunarcoin.com/backend/api/squad/${userId}`);
       const updatedSquad = updatedSquadResponse.data.userSquad;
-     console.log('Claim update response:', updatedSquadResponse.data);
-  
-   
 
       setUserSquad(updatedSquad);
    } catch (error) {
@@ -170,7 +157,7 @@ const Squad = () => {
     setTimeout(() => {
       
       setDelayLoading(false); // Stop loading after 3 seconds
-    }, 2000);
+    }, 1000);
 
     return (
       <div
@@ -193,17 +180,11 @@ const Squad = () => {
   const earning = Number(userSquad?.referralCount || 0) * 5000;
   const difference = Number(earning) - Number(userSquad?.claimedReferral || 0);
 
-  
   const totalBalance = Number(all?.balance || 0) + Number(earning || 0);
   const displayTotalBalance = totalBalance.toLocaleString('en-US', {
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,
   });
-
-
-  console.log('TotalBal', totalBalance);
-  console.log('Total', all?.balance);
-  
 
   const newTotalSquad = Number(userSquad?.totalBalance || 0) + Number(difference);
     
@@ -214,12 +195,7 @@ const Squad = () => {
 
   const isClaimable = difference > 0;
 
-  console.log('Earning:', earning);
-    console.log('Difference:', difference);
-    console.log('Total Balance:', totalBalance);
-    console.log('new Balance:', newTotalSquad);
-  
-  
+
   return (
     <div
     className="relative min-h-screen bg-black bg-blur-sm bg-don bg-[center_top_5rem] bg-no-repeat text-white flex flex-col items-center p-4 space-y-4 ">
