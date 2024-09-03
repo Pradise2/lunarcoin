@@ -269,7 +269,7 @@ const Home = () => {
     setTimeout(() => {
       
       setDelayLoading(false); // Stop loading after 3 seconds
-    }, 3000);
+    }, 2000);
 
     return (
       <div
