@@ -10,7 +10,7 @@ import './bgvh.css';
 
 const Squad = () => {
   const [copied, setCopied] = useState(false);
-  const [userId, setUserId] = useState('001');
+  const [userId, setUserId] = useState(null);
   const [username, setUserName] = useState(null);
   const [userSquad, setUserSquad] = useState(null);
   const [squads, setSquads] = useState([]);
@@ -171,14 +171,15 @@ const Squad = () => {
         className="relative min-h-screen bg-black bg-blur-sm bg-don bg-center bg-no-repeat text-white flex items-center justify-center p-4 space-y-4"
       >
         <div className="absolute inset-0 bg-black bg-opacity-60"></div>
-        <div 
+        <div
           className="absolute transform -translate-y-1/2 top-1/2 flex justify-center items-center"
           style={{ top: '50%' }}
         >
-          <ClipLoader 
-          color="#FFD700" 
-          size={100} 
-          speedMultiplier={1} />
+          <ClipLoader
+            color="#FFD700"
+            size={100}
+            speedMultiplier={1}
+          />
         </div>
       </div>
     );
