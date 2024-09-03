@@ -264,19 +264,21 @@ const Home = () => {
     }
   };
 
- 
-
-  if (loading ) {
+  if (loading) {
     return (
       <div
-        className="relative min-h-screen bg-black bg-screen bg-no-repeat bg-contain bg-center flex items-center justify-center"
+        className="relative min-h-screen bg-black bg-blur-sm bg-don bg-center bg-no-repeat text-white flex items-center justify-center p-4 space-y-4"
       >
-        <div 
+        <div className="absolute inset-0 bg-black bg-opacity-60"></div>
+        <div
           className="absolute transform -translate-y-1/2 top-1/2 flex justify-center items-center"
           style={{ top: '50%' }}
         >
-          
-          
+          <ClipLoader
+            color="#FFD700"
+            size={100}
+            speedMultiplier={1}
+          />
         </div>
       </div>
     );
@@ -288,12 +290,60 @@ const Home = () => {
   const total = ((all?.balance || 0) + (userData && isValidNumber(userData.FarmBalance) ? Math.round(userData.FarmBalance) : 0)).toLocaleString();
 
   return (
-    <div className="relative min-h-screen bg-black bg-screen bg-no-repeat bg-contain bg-center flex flex-col items-center justify-center">
-      
-      
+    <div className="relative min-h-screen bg-black text-white flex flex-col items-center p-4 space-y-6">
+      <div className="relative w-11/12">
+        <div className="flex flex-row justify-between">
+          <p className="text-white flex items-center font-black text-xl text-center">Hi,&nbsp;
+            <span className="text-lg items-center font-normal">{userName}</span>
+          </p>
+          <img aria-hidden="true" alt="team-icon" src={wallet} width="40" height="40" />
+        </div>
+      </div>
+
+      <div className="relative">
+        <div className="relative" style={{ marginTop: '-10px' }}>
+          <img src={remove} alt="Remove" className="w-50 h-45" />
+          <div className="absolute inset-0 bg-black bg-opacity-70"></div>
+          <img 
+            src={coin} 
+            alt="LAR Coin" 
+            className="w-45 h-44 rounded-full absolute inset-0" 
+            style={{ marginTop: '80px', marginLeft: '50px' }} 
+          />
+        </div>
+        <div className="flex flex-row justify-center items-center">
+        <p className="text-white font-medium text-2xl">
+  {total}
+</p>
+
+          <p className="bg-custom bg-clip-text text-transparent text-2xl font-black">&nbsp;LAR</p>
+        </div>
+      </div>
+
+      <div className="relative w-11/12 bg-custom bg-opacity-40 text-card-foreground p-2 rounded-3xl max-w-md text-center min-h-[20vh] flex flex-col justify-center space-y-3">
+        <p className="text-white font-normal text-xl">Farming Points</p>
+        <div className="flex items-center justify-center space-x-2">
+          <p className="text-4xl font-medium text-white">
+            {userData && isValidNumber(userData.FarmReward) ? userData.FarmReward.toFixed(1) : "0.0"} 
+            <span className="text-white font-bold">&nbsp;LAR</span>
+          </p>
+        </div>
+        <p className="font-extrabold text-vividRed"><FormattedTime time={userData?.FarmTime || 0} /></p>
+        <div className="space-y-4 w-full flex items-center flex-col">
+          <button
+            className={`text-white hover:bg-black px-6 py-3 rounded-xl w-full max-w-md ${buttonText === "Farming..." ? "bg-black" : "bg-gradient-to-r from-golden-moon"}`}
+            onClick={handleButtonClick}
+          >
+            {buttonText}
+          </button>
+        </div>
+      </div>
+
+      <div className="w-full max-w-md rounded-3xl bg-darkGray fixed bottom-0 left-0 flex justify-around py-1">
+        <Footer />
+      </div>
     </div>
   );
-  
 };
 
 export default Home;

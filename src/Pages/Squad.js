@@ -171,21 +171,23 @@ const Squad = () => {
         className="relative min-h-screen bg-black bg-blur-sm bg-don bg-center bg-no-repeat text-white flex items-center justify-center p-4 space-y-4"
       >
         <div className="absolute inset-0 bg-black bg-opacity-60"></div>
-        <div
+        <div 
           className="absolute transform -translate-y-1/2 top-1/2 flex justify-center items-center"
           style={{ top: '50%' }}
         >
-          <ClipLoader
-            color="#FFD700"
-            size={100}
-            speedMultiplier={1}
-          />
+          <ClipLoader 
+          color="#FFD700" 
+          size={100} 
+          speedMultiplier={1} />
         </div>
       </div>
     );
   }
+  const earning = Number(userSquad?.referralCount || 0) * 5000;
+  const difference = Number(earning) - Number(userSquad?.claimedReferral || 0);
 
-  const totalBalance = Number(all?.balance || 0) + Number(userSquad?.totalSquad || 0);
+  
+  const totalBalance = Number(all?.balance || 0) + Number(earning || 0);
   const displayTotalBalance = totalBalance.toLocaleString('en-US', {
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,
@@ -195,11 +197,7 @@ const Squad = () => {
   console.log('TotalBal', totalBalance);
   console.log('Total', all?.balance);
   
-  // Format the difference with commas and two decimal places
- 
 
-  const earning = Number(userSquad?.referralCount || 0) * 5000;
-  const difference = Number(earning) - Number(userSquad?.claimedReferral || 0);
   const newTotalSquad = Number(userSquad?.totalBalance || 0) + Number(difference);
     
   const formattedDifference = difference.toLocaleString('en-US', {
@@ -213,6 +211,7 @@ const Squad = () => {
     console.log('Difference:', difference);
     console.log('Total Balance:', totalBalance);
     console.log('new Balance:', newTotalSquad);
+  
   
   return (
     <div
