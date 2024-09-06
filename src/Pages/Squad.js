@@ -156,7 +156,7 @@ const Squad = () => {
   if (delayLoading) {
     setTimeout(() => {
       
-      setDelayLoading(false); // Stop loading after 3 seconds
+      setDelayLoading(false); 
     }, 1000);
 
     return (
