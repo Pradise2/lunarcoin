@@ -17,7 +17,7 @@ import telegram  from './telegram.png';
 
 const Tasks = () => {
   const [userData, setUserData] = useState({ TasksStatus: {}, TasksComplete: {} });
-  const [userId, setUserId] = useState(null); // Replace with dynamic ID if possible
+  const [userId, setUserId] = useState('00 2'); // Replace with dynamic ID if possible
   const [taskFilter, setTaskFilter] = useState('new');
   const [loadingTask, setLoadingTask] = useState(null);
   const [specialTask, setSpecialTask] = useState([]);
@@ -53,66 +53,15 @@ const Tasks = () => {
     '18': cat,
     '19': hamster
   };
-
   
   const dtaskLogos = {
-    '1': youtube,
-    '2': youtube,
-    '3': youtube,
-    '4': youtube,
-    '5': facebook,
-    '6': facebook,
-    '7': twitter,
-    '8': twitter,
-    '9': telegram, 
-    '10': telegram,
-    '11': twitter,
-    '12': twitter,
-    '13': twitter,
-    '14': twitter,
-    '15': twitter,
-    '16': telegram,
-    '17': telegram,
-    '18': facebook,
-    '19': facebook,
-    '20': facebook,
-    '21': twitter,
-    '22': twitter,
-    '23': twitter,
-    '24': twitter,
-    '25': telegram,
-    '26': telegram,
-    '27': telegram,
-    '28': telegram,
-    '29': twitter,
-    '30': twitter,
-    '31': telegram,
-    '32': telegram,
-    '33': telegram,
-    '34': twitter,
-    '35': twitter,
-    '36': telegram,
-    '37': telegram,
-    '38': telegram,
-    '39': telegram,
-    '40': twitter,
-    '41': twitter,
-    '42': telegram,
-    '43': telegram,
-    '44': telegram,
-    '45': twitter,
-    '46': twitter,
-    '47': twitter,
-    '48': telegram,
-    '49': telegram,
-    '50': telegram,
-    '51': telegram,
-    '52': twitter,
-    '53': twitter,
     '54': twitter,
+    '55': twitter,
+    '56': twitter,
+    '57': telegram,
+    '58': youtube,
+    '59': youtube
   };
-
-
 
 
   const initializeUserId = useCallback(() => {
