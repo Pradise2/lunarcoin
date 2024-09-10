@@ -64,6 +64,7 @@ const Tasks = () => {
   };
 
 
+
   const initializeUserId = useCallback(() => {
     if (window.Telegram && window.Telegram.WebApp) {
       const { WebApp } = window.Telegram;
