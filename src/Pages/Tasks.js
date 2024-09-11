@@ -61,7 +61,9 @@ const Tasks = () => {
     '57': telegram,
     '58': youtube,
     '59': youtube,
-    '60': youtube
+    '60': youtube,
+    '61': twitter,
+    '62': telegram,
   };
 
 
