@@ -30,9 +30,6 @@ const Tasks = () => {
   const [dailyTask, setDailyTask] = useState([]);
   const [delayLoading, setDelayLoading] = useState(true)
 
-
-
-
   const taskLogos = {
     '1': youtube,
     '2': facebook,
@@ -51,7 +48,9 @@ const Tasks = () => {
     '16': youtube,
     '17': blum,
     '18': cat,
-    '19': hamster
+    '19': hamster,
+    '20': youtube,
+    '21': youtube
   };
   
   const dtaskLogos = {
@@ -64,9 +63,9 @@ const Tasks = () => {
     '60': youtube,
     '61': twitter,
     '62': telegram,
+    '63' : twitter,   
+
   };
-
-
 
   const initializeUserId = useCallback(() => {
     if (window.Telegram && window.Telegram.WebApp) {
