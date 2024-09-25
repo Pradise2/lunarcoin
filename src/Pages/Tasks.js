@@ -50,7 +50,9 @@ const Tasks = () => {
     '18': cat,
     '19': hamster,
     '20': youtube,
-    '21': youtube
+    '21': youtube,
+    '22': twitter,
+    '23': twitter,
   };
   
   const dtaskLogos = {
