@@ -71,13 +71,12 @@ const Tasks = () => {
     '66': twitter,
     '67': telegram,
     '68': telegram,
-    '69': telegram,
+    '69': twitter,
     '70': twitter,
     '71': twitter,
-    '72': twitter,
+    '72': telegram,
     '73': telegram,
-    '74': telegram,
-    '75': telegram,
+    '74': telegram
   };
 
   const initializeUserId = useCallback(() => {
