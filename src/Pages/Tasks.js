@@ -14,10 +14,11 @@ import youtube from './youtube.png'
 import twitter from './twitter.png'
 import axios from 'axios';
 import telegram  from './telegram.png';
+import Popup from './Popup';
 
 const Tasks = () => {
   const [userData, setUserData] = useState({ TasksStatus: {}, TasksComplete: {} });
-  const [userId, setUserId] = useState(null); // Replace with dynamic ID if possible
+  const [userId, setUserId] = useState(null);
   const [taskFilter, setTaskFilter] = useState('new');
   const [loadingTask, setLoadingTask] = useState(null);
   const [specialTask, setSpecialTask] = useState([]);
@@ -29,6 +30,17 @@ const Tasks = () => {
   const [error, setError] = useState(null);
   const [dailyTask, setDailyTask] = useState([]);
   const [delayLoading, setDelayLoading] = useState(true)
+  const [isContentHidden, setIsContentHidden] = useState(false);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+ 
+  const handleOpenPopup = () => {
+    setIsPopupOpen(true);
+  };
+
+  const handleClosePopup = () => {
+    setIsPopupOpen(false);
+  };
+
 
   const taskLogos = {
     '1': youtube,
@@ -367,9 +379,30 @@ const Tasks = () => {
       <div className="absolute inset-0 bg-black bg-opacity-60"></div>
       <div className="relative flex-grow overflow-y-auto text-center text-white p-4">
         <h1 className="text-2xl font-bold">Curious about the moon's secrets? <br />Complete tasks to find out!</h1>
-                <p className="text-zinc-500 mt-2">But hey, only qualified actions unlock the <br /> LAR galaxy! ✨</p>
+        <p className="text-zinc-500 mt-2">But hey, only qualified actions unlock the <br /> LAR galaxy! ✨</p>
+        <p className='text-left font-bold m-2 text-2xl'>Weekly Earn</p>
+
+        <div className="flex w-full bg-sinc bg-opacity-10 pl-4 pt-2 pb-2 flex-col rounded-3xl">
+      {/* Conditionally render the main content */}
+      {!isContentHidden && (
+        <div className='flex flex-col'>
+          <div className='text-left ml-4 space-y-2 flex-col flex'>
+            <p className='text-xl font-normal w-full'>🚀 Lunar Astronauts </p>
+            <p className='text-xl font-normal w-full'>Crypto Giveaway Campaign! 🚀✨</p>
+          </div>
+          <button onClick={handleOpenPopup} className="w-16 m-4 p-2 bg-golden-moon text-white rounded-2xl">
+            Open
+          </button>
+        </div>
+      )}
+
+      {/* Conditionally render the ReferralPopup component */}
+      {isPopupOpen && <Popup onClose={handleClosePopup} />}
+    </div>
+  
+
         <div className="relative flex justify-center w-full mt-4">
-          <button 
+                <button 
             className={`py-2 bg-opacity-70 text-center text-sm w-full rounded-2xl ${taskFilter === 'new' ? 'bg-white text-black' : 'bg-zinc-950 text-zinc-400'}`}
             onClick={() => setTaskFilter('new')}
           > 
@@ -508,8 +541,6 @@ const Tasks = () => {
 )}
 
         </div>
-  
-        
       </div>
   
       <AnimatePresence>
