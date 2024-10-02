@@ -35,7 +35,7 @@ const Footer = () => {
     <div className="flex justify-around w-full max-w-md m-2 font-thin font-sans text-xs">
       {renderLink("/", home, "Home")}
       {renderLink("/tasks", task, "Tasks")}
-    
+      {renderLink("/earn", bag, "Earn")}
       {renderLink("/squad", user, "Squad")}
     </div>
   );
