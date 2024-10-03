@@ -27,7 +27,9 @@ const Popup = ({ onClose }) => {
     '1': telegram,
     '2': youtube,
     '3': facebook,
-    '4': twitter
+    '4': twitter,
+    '5': telegram,
+    '6': twitter,
   };
 
   const copyToClipboard = () => {
